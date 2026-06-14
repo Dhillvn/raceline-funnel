@@ -247,10 +247,82 @@ body{font-family:var(--body); background:var(--black); color:var(--ink);
   .range-bar .mid{transition:none; opacity:1;}
 }
 </style>
+<script id="numen-deal">
+/* Numen funnel state — carries the visitor's car + details across the 5 funnel
+   pages so the walkthrough echoes their own data + a rough indicative price.
+   Standalone (GitHub Pages, same-origin) + Chrome-embedded use sessionStorage;
+   Safari-embedded (3rd-party iframe storage blocked) falls back to the Velo
+   relay: numenNavTo carries the deal to the parent, which posts it back into
+   each fresh embed (see masterPage.js). Deterministic — no Math.random. */
+(function(){
+  var KEY = 'numenDeal';
+  var mem = null;
+  function parse(s){ try { return s ? JSON.parse(s) : null; } catch(e){ return null; } }
+
+  window.numenDealRead = function(){
+    if (mem) return mem;
+    try { var d = parse(sessionStorage.getItem(KEY)); if(d){ mem = d; } } catch(e){}
+    return mem;
+  };
+  window.numenDealWrite = function(patch){
+    var d = window.numenDealRead() || {};
+    for (var k in patch){ if(Object.prototype.hasOwnProperty.call(patch,k)) d[k] = patch[k]; }
+    mem = d;
+    try { sessionStorage.setItem(KEY, JSON.stringify(d)); } catch(e){}
+    try { if (window.self !== window.top) window.parent.postMessage({ numenDeal: d }, "*"); } catch(e){}
+    return d;
+  };
+
+  /* inbound: Velo posts the stored deal into a freshly-loaded embed (Safari) */
+  window.addEventListener('message', function(ev){
+    var data = ev && ev.data;
+    if (data && data.numenDeal && typeof data.numenDeal === 'object'){
+      mem = data.numenDeal;
+      try { sessionStorage.setItem(KEY, JSON.stringify(mem)); } catch(e){}
+      if (typeof window.numenRender === 'function'){ try { window.numenRender(); } catch(e){} }
+    }
+  });
+  /* ask the Wix parent for any deal stored before this page loaded */
+  try { if (window.self !== window.top) window.parent.postMessage({ numenReady: true }, "*"); } catch(e){}
+
+  /* ---- formatters ---- */
+  window.numenGBP   = function(n){ return '£' + Math.round(n).toLocaleString('en-GB'); };
+  window.numenMiles = function(m){ var n = parseInt(String(m||'').replace(/[^\d]/g,''),10); return isNaN(n) ? '' : n.toLocaleString('en-GB'); };
+  window.numenCar   = function(d){ d = d || window.numenDealRead() || {}; return [d.year, d.car].filter(function(x){return x && String(x).trim();}).join(' ').trim(); };
+  window.numenFirst = function(d){ d = d || window.numenDealRead() || {}; return (String(d.fullName||'').trim().split(/\s+/)[0]) || ''; };
+
+  /* ---- deterministic rough indicative price (a rough guide, NOT a valuation) ---- */
+  window.numenPrice = function(d){
+    d = d || window.numenDealRead() || {};
+    var hay = String(d.car || '').toLowerCase();
+    var base = 22000;
+    var bands = [
+      [/ferrari|lamborghini|lambo|mclaren|rolls|royce|ford gt|carrera gt|gt2 rs|gt3 rs|enzo|aventador|huracan|\bdbs\b|\bdb12\b|valkyrie|\b720s\b|\b765\b|\b750s\b/, 150000],
+      [/porsche\s*9(11|92|91|97|96)|\bgt3\b|\bgt2\b|turbo s|gt-?r|amg gt|\br8\b|\bdb11\b|vantage|\bnsx\b|aston|bentley|maserati|continental/, 74000],
+      [/porsche|cayman|boxster|718|\bamg\b|\bm[2-8]\b|\brs[3-7]\b|golf r|type r|f-?type|lotus|supra|cayenne|macan|panamera|quattroporte|alpine/, 46000],
+      [/audi s|\bgti\b|\bst\b|mustang|camaro|abarth|jcw|focus rs|fiesta|megane|civic|\bvxr\b/, 27000]
+    ];
+    for (var i=0;i<bands.length;i++){ if(bands[i][0].test(hay)){ base = bands[i][1]; break; } }
+    var condM = { Exceptional:1.12, Excellent:1.0, Good:0.88, Project:0.62 };
+    var cm = condM[d.condition] != null ? condM[d.condition] : 0.96;
+    var miles = parseInt(String(d.mileage||'').replace(/[^\d]/g,''),10); if(isNaN(miles)) miles = 30000;
+    var mf = 1 + (30000 - miles)/320000; if(mf>1.15) mf=1.15; if(mf<0.74) mf=0.74;
+    var yr = parseInt(String(d.year||'').replace(/[^\d]/g,''),10);
+    var yf = 1; if(!isNaN(yr)){ yf = 1 + (yr - 2016)*0.012; if(yf>1.18) yf=1.18; if(yf<0.82) yf=0.82; }
+    var sh = String(d.serviceHistory||'').toLowerCase();
+    var shf = sh.indexOf('full')>-1 ? 1.03 : (sh.indexOf('no history')>-1 ? 0.94 : 1);
+    var mid = base*cm*mf*yf*shf;
+    var r5 = function(x){ return Math.round(x/500)*500; };
+    var low = r5(mid*0.94), high = r5(mid*1.06);
+    if (high - low < 1000) high = low + 1000;
+    return { low: low, high: high };
+  };
+})();
+</script>
 <script id="numen-nav">
 /* Numen funnel nav shim. In a Wix "Embed a Site" iframe, ask the parent (Velo
-   masterPage) to navigate between Wix pages; standalone (GitHub Pages) falls
-   back to normal relative links so the demo still flows. */
+   masterPage) to navigate between Wix pages AND carry the funnel deal; standalone
+   (GitHub Pages) falls back to normal relative links so the demo still flows. */
 (function(){
   var WIX_PAGE = {
     "landing.html":"Home","value.html":"Value","valuation.html":"Result",
@@ -261,7 +333,11 @@ body{font-family:var(--body); background:var(--black); color:var(--ink);
   try { if (embedded && document.documentElement) document.documentElement.classList.add("numen-embedded"); } catch(e){}
   window.numenNavTo = function(rel){
     if (embedded){
-      try { window.parent.postMessage({ numenNav: WIX_PAGE[rel] || rel, rel: rel }, "*"); return; } catch(e){}
+      try {
+        var deal = (typeof window.numenDealRead === 'function') ? window.numenDealRead() : null;
+        window.parent.postMessage({ numenNav: WIX_PAGE[rel] || rel, rel: rel, numenDeal: deal || undefined }, "*");
+        return;
+      } catch(e){}
     }
     window.location.href = rel;
   };
@@ -481,6 +557,28 @@ const io = new IntersectionObserver((entries)=>{
 document.querySelectorAll('main section').forEach(s=>io.observe(s));
 /* range block sits at the top — reveal it immediately on load */
 requestAnimationFrame(()=>document.getElementById('rangeBlock').classList.add('in'));
+
+/* ---- echo the visitor's own car + a rough indicative range (falls back to the
+       static demo if someone lands here directly with no funnel deal) ---- */
+window.numenRender = function(){
+  const d = window.numenDealRead && window.numenDealRead();
+  if(!d) return;
+  const car = window.numenCar(d);
+  const miles = window.numenMiles(d.mileage);
+  const veh = document.querySelector('.range-card .r-veh');
+  if(veh && car){
+    veh.innerHTML = 'Indicative guide for your <b>' + car.replace(/[<>&]/g,'') + '</b>'
+      + (miles ? ', ' + miles + ' miles' : '') + ', in the condition you’ve described.';
+  }
+  const { low, high } = window.numenPrice(d);
+  const figs = document.querySelectorAll('.r-figures .r-fig');
+  if(figs[0]) figs[0].textContent = window.numenGBP(low);
+  if(figs[1]) figs[1].textContent = window.numenGBP(high);
+  const ends = document.querySelectorAll('.range-bar .ends span, .ends span');
+  if(ends[0]) ends[0].textContent = window.numenGBP(low);
+  if(ends[1]) ends[1].textContent = window.numenGBP(high);
+};
+window.numenRender();
 </script>
 </body>
 </html>
