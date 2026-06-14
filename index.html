@@ -610,6 +610,7 @@ section[id], footer[id]{scroll-margin-top:92px;}
   };
   var embedded = false;
   try { embedded = (window.self !== window.top); } catch(e){ embedded = true; }
+  try { if (embedded && document.documentElement) document.documentElement.classList.add("numen-embedded"); } catch(e){}
   window.numenNavTo = function(rel){
     if (embedded){
       try { window.parent.postMessage({ numenNav: WIX_PAGE[rel] || rel, rel: rel }, "*"); return; } catch(e){}
@@ -627,6 +628,14 @@ section[id], footer[id]{scroll-margin-top:92px;}
   }, true);
 })();
 </script>
+<style id="numen-embed-fix">
+/* When this page is rendered inside a Wix "Embed a Site" iframe, vh resolves to
+   the embed's fixed height (thousands of px), blowing up full-bleed images.
+   Pin the uncapped vh heights to sensible pixels. Standalone is untouched. */
+html.numen-embedded .hero{min-height:780px;}
+html.numen-embedded .cta-s{min-height:700px;}
+html.numen-embedded .ps .photo{height:420px;}
+</style>
 </head>
 <body>
 

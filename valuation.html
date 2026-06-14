@@ -258,6 +258,7 @@ body{font-family:var(--body); background:var(--black); color:var(--ink);
   };
   var embedded = false;
   try { embedded = (window.self !== window.top); } catch(e){ embedded = true; }
+  try { if (embedded && document.documentElement) document.documentElement.classList.add("numen-embedded"); } catch(e){}
   window.numenNavTo = function(rel){
     if (embedded){
       try { window.parent.postMessage({ numenNav: WIX_PAGE[rel] || rel, rel: rel }, "*"); return; } catch(e){}
@@ -275,6 +276,11 @@ body{font-family:var(--body); background:var(--black); color:var(--ink);
   }, true);
 })();
 </script>
+<style id="numen-embed-fix">
+/* Inside a fixed-height Wix embed, body{min-height:100vh} stretches to the
+   embed height. Let the body be its true content height instead. */
+html.numen-embedded body{min-height:0;}
+</style>
 </head>
 <body>
 
