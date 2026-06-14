@@ -1020,5 +1020,22 @@ revealOn('footer', 0.15);
   });
 }
 </script>
+<script>
+/* Wix-embed height reporter — posts page height to the parent iframe host */
+(function(){
+  function postH(){
+    var h = Math.max(
+      document.documentElement.scrollHeight, document.body.scrollHeight,
+      document.documentElement.offsetHeight, document.body.offsetHeight
+    );
+    try { parent.postMessage({ __funnelHeight: h, page: location.pathname }, "*"); } catch(e){}
+  }
+  window.addEventListener("load", postH);
+  window.addEventListener("resize", postH);
+  if (window.ResizeObserver){ try { new ResizeObserver(postH).observe(document.body); } catch(e){} }
+  document.addEventListener("click", function(){ setTimeout(postH, 360); });
+  var n=0, t=setInterval(function(){ postH(); if(++n>24) clearInterval(t); }, 250);
+})();
+</script>
 </body>
 </html>
