@@ -559,10 +559,8 @@ document.getElementById('btnConfirmAppraisal').addEventListener('click', ()=>{
   const err  = document.getElementById('bookError');
   if(!selectedKey || !selectedTime || !selectedLoc || !phone || !ack){ err.classList.add('show'); return; }
   err.classList.remove('show');
-  document.getElementById('formArea').style.display = 'none';
-  document.getElementById('headBlock').style.display = 'none';
-  document.getElementById('confirmed').classList.add('show');
-  window.scrollTo({top:0, behavior:'smooth'});
+  /* funnel flow: hand off to the dedicated thank-you page */
+  window.location.href = 'thank-you.html';
 });
 </script>
 </body>

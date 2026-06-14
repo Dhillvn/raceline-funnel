@@ -550,6 +550,8 @@ document.getElementById('btnSeeValuation').addEventListener('click', ()=>{
   doneEl.classList.add('show');
   document.getElementById('progress').style.opacity = '.4';
   window.scrollTo({top:0, behavior:'smooth'});
+  /* funnel flow: after the calculating stand-in, advance to the valuation result */
+  setTimeout(function(){ window.location.href = 'valuation.html'; }, 1600);
 });
 </script>
 </body>
