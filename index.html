@@ -599,6 +599,34 @@ section[id], footer[id]{scroll-margin-top:92px;}
   .footer .rule{transform:scaleX(1);} .footer.in::before{transform:translateX(-50%) scaleX(1);}
 }
 </style>
+<script id="numen-nav">
+/* Numen funnel nav shim. In a Wix "Embed a Site" iframe, ask the parent (Velo
+   masterPage) to navigate between Wix pages; standalone (GitHub Pages) falls
+   back to normal relative links so the demo still flows. */
+(function(){
+  var WIX_PAGE = {
+    "landing.html":"Home","value.html":"Value","valuation.html":"Result",
+    "book-appraisal.html":"Booking","thank-you.html":"Thanks"
+  };
+  var embedded = false;
+  try { embedded = (window.self !== window.top); } catch(e){ embedded = true; }
+  window.numenNavTo = function(rel){
+    if (embedded){
+      try { window.parent.postMessage({ numenNav: WIX_PAGE[rel] || rel, rel: rel }, "*"); return; } catch(e){}
+    }
+    window.location.href = rel;
+  };
+  document.addEventListener("click", function(ev){
+    var a = ev.target && ev.target.closest ? ev.target.closest("a") : null;
+    if(!a) return;
+    var href = a.getAttribute("href") || "";
+    if (Object.prototype.hasOwnProperty.call(WIX_PAGE, href) && embedded){
+      ev.preventDefault();
+      window.numenNavTo(href);
+    }
+  }, true);
+})();
+</script>
 </head>
 <body>
 

@@ -251,6 +251,34 @@ body{font-family:var(--body); background:var(--black); color:var(--ink);
   .progress .rail .fill,.done .spin{transition:none;}
 }
 </style>
+<script id="numen-nav">
+/* Numen funnel nav shim. In a Wix "Embed a Site" iframe, ask the parent (Velo
+   masterPage) to navigate between Wix pages; standalone (GitHub Pages) falls
+   back to normal relative links so the demo still flows. */
+(function(){
+  var WIX_PAGE = {
+    "landing.html":"Home","value.html":"Value","valuation.html":"Result",
+    "book-appraisal.html":"Booking","thank-you.html":"Thanks"
+  };
+  var embedded = false;
+  try { embedded = (window.self !== window.top); } catch(e){ embedded = true; }
+  window.numenNavTo = function(rel){
+    if (embedded){
+      try { window.parent.postMessage({ numenNav: WIX_PAGE[rel] || rel, rel: rel }, "*"); return; } catch(e){}
+    }
+    window.location.href = rel;
+  };
+  document.addEventListener("click", function(ev){
+    var a = ev.target && ev.target.closest ? ev.target.closest("a") : null;
+    if(!a) return;
+    var href = a.getAttribute("href") || "";
+    if (Object.prototype.hasOwnProperty.call(WIX_PAGE, href) && embedded){
+      ev.preventDefault();
+      window.numenNavTo(href);
+    }
+  }, true);
+})();
+</script>
 </head>
 <body>
 
@@ -551,7 +579,7 @@ document.getElementById('btnSeeValuation').addEventListener('click', ()=>{
   document.getElementById('progress').style.opacity = '.4';
   window.scrollTo({top:0, behavior:'smooth'});
   /* funnel flow: after the calculating stand-in, advance to the valuation result */
-  setTimeout(function(){ window.location.href = 'valuation.html'; }, 1600);
+  setTimeout(function(){ window.numenNavTo('valuation.html'); }, 1600);
 });
 </script>
 </body>
