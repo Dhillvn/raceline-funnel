@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raceline Specialist Cars — Book your appraisal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   PAGE 5 — BOOK APPRAISAL  (/book-appraisal)  ·  standalone preview
+   Same locked system as landing / wizard / result (C+T3): Playfair
+   Display + Inter · red #E30613 · obsidian #08080A · ease (.16,1,.3,1).
+
+   DELIBERATE DEVIATION: spec §Page5 calls for premium-LIGHT.
+   Built DARK / on-system (Lewis's call) — consistent with Pages 2 & 3,
+   so the converting step doesn't jar against the cinematic world.
+
+   Section stack (spec §Page5): header line → slot picker (date+time)
+   → location mode → confirm phone (pre-filled) → bring checklist →
+   named specialist → disclosure ack → confirm CTA. Two-column at
+   desktop (form + quiet aside), single column on mobile.
+
+   INTERNAL Raceline demo skin · INDICATIVE-only · placeholder copy.
+   §4.6 third disclaimer location = the #chkDisclosureAck proof-tick.
+   ============================================================ */
+:root{
+  --red:#E30613; --red-dark:#B00510;
+  --black:#08080A; --ink:#FFFFFF; --muted:#A6A6AD; --faint:#6E6E76; --line:rgba(255,255,255,.14);
+  --field:rgba(255,255,255,.04); --field-line:rgba(255,255,255,.16); --field-line-focus:var(--red);
+  --plate-yellow:#FFD400; --plate-blue:#063298; --plate-ink:#111111;
+  --display:'Playfair Display',serif; --label:'Inter',sans-serif; --body:'Inter',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body); background:var(--black); color:var(--ink);
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; overflow-x:hidden;
+  min-height:100vh; display:flex; flex-direction:column;}
+
+.reveal{opacity:0; transform:translateY(22px); transition:opacity .9s var(--ease), transform .9s var(--ease); transition-delay:var(--d,0s);}
+.in .reveal{opacity:1; transform:none;}
+@media (prefers-reduced-motion:reduce){ .reveal{opacity:1; transform:none; transition:none;} }
+
+/* ---------- HEADER (slim: brand + phone) ---------- */
+.header{position:fixed; top:0; left:0; right:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  padding:20px clamp(20px,5vw,64px);
+  background:rgba(8,8,10,.82); -webkit-backdrop-filter:saturate(1.2) blur(14px); backdrop-filter:saturate(1.2) blur(14px);
+  border-bottom:1px solid var(--line); transform:translateY(-100%); opacity:0;
+  transition:transform .9s var(--ease) .05s, opacity .9s var(--ease) .05s;}
+.header.ready{transform:translateY(0); opacity:1;}
+.header .brand{display:flex; align-items:center; gap:11px; text-decoration:none; flex:none;}
+.header .brand .mark{font-family:var(--label); font-weight:700; font-size:20px; letter-spacing:.10em; color:#fff;}
+.header .brand .mark b{color:var(--red);}
+.header .brand .sub{font-family:var(--body); font-size:9.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--muted);}
+.header .navphone{display:inline-flex; align-items:center; gap:8px; font-family:var(--label); font-size:13px; font-weight:500;
+  color:#fff; text-decoration:none; padding:9px 16px; border:1px solid var(--line); border-radius:3px;
+  transition:background .25s var(--ease), border-color .25s var(--ease);}
+.header .navphone svg{width:14px; height:14px; color:var(--red); transition:color .25s var(--ease);}
+.header .navphone:hover{background:var(--red); border-color:var(--red);}
+.header .navphone:hover svg{color:#fff;}
+@media (max-width:620px){ .header .navphone span{display:none;} .header .navphone{padding:9px 12px;} .header .brand .sub{display:none;} }
+
+/* ---------- PAGE SHELL ---------- */
+.book{position:relative; flex:1; isolation:isolate; overflow:hidden;
+  background-image:radial-gradient(120% 60% at 50% -6%, rgba(227,6,19,.1) 0%, rgba(227,6,19,0) 50%);
+  padding:clamp(112px,15vh,156px) clamp(20px,5vw,64px) clamp(48px,7vh,84px);}
+.book::after{content:""; position:absolute; inset:0; z-index:5; pointer-events:none; opacity:.045; mix-blend-mode:overlay;
+  background-image:var(--grain);}
+.wrap{position:relative; z-index:3; max-width:960px; margin:0 auto;}
+
+/* ---------- HEADER LINE ---------- */
+.bookhead{text-align:center; max-width:60ch; margin:0 auto;}
+.eyebrow{display:inline-flex; align-items:center; gap:13px; font-family:var(--label);
+  font-size:11px; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.6);}
+.eyebrow::before, .eyebrow::after{content:""; width:30px; height:1px; background:var(--red);}
+.bookhead h1{font-family:var(--display); font-weight:500; font-size:clamp(2rem,1.4rem + 2.2vw,2.9rem);
+  line-height:1.1; letter-spacing:-.01em; color:#fff; margin-top:18px; text-wrap:balance;}
+.bookhead h1 .accent{color:var(--red); font-style:italic; font-weight:600;}
+.bookhead .sub{font-family:var(--body); font-size:1.04rem; line-height:1.6; color:rgba(255,255,255,.66);
+  max-width:52ch; margin:14px auto 0;}
+
+/* ---------- LAYOUT ---------- */
+.layout{display:grid; grid-template-columns:1.55fr 1fr; gap:24px; margin-top:clamp(36px,5vh,56px); align-items:stretch;}
+
+/* main elevated card */
+.maincard{position:relative; min-width:0; border-radius:16px; padding:clamp(26px,3.4vw,42px);
+  background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+  border:1px solid var(--line); box-shadow:0 60px 130px -60px rgba(0,0,0,.96);}
+
+.block{margin-top:clamp(28px,3.6vh,40px);}
+.block:first-child{margin-top:0;}
+.block .blabel{display:flex; align-items:center; gap:11px; font-family:var(--label); font-size:12px; font-weight:700;
+  letter-spacing:.06em; color:#fff; margin-bottom:14px;}
+.block .blabel .n{display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; flex:none;
+  border-radius:50%; border:1px solid var(--red); color:var(--red); font-size:11px; font-weight:700;}
+
+/* booking accordion (dropdown sections) */
+.acc{display:flex; flex-direction:column; gap:14px;}
+.accsec{border:1px solid var(--line); border-radius:12px; overflow:hidden; background:rgba(255,255,255,.02);
+  transition:border-color .3s var(--ease), background .3s var(--ease);}
+.accsec.open{border-color:rgba(227,6,19,.5); background:rgba(255,255,255,.035);}
+.acchead{width:100%; display:flex; align-items:center; gap:14px; padding:18px 20px; cursor:pointer;
+  background:none; border:0; text-align:left; font-family:var(--label);}
+.acchead .n{display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; flex:none;
+  border-radius:50%; border:1px solid var(--red); color:var(--red); font-size:11px; font-weight:700;
+  transition:background .25s var(--ease), color .25s var(--ease);}
+.accsec.open .acchead .n{background:var(--red); color:#fff;}
+.acchead .htxt{flex:1; min-width:0;}
+.acchead .ht{display:block; font-size:13px; font-weight:700; letter-spacing:.04em; color:#fff;}
+.acchead .hs{display:block; font-family:var(--body); font-size:.82rem; color:rgba(255,255,255,.5); margin-top:3px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.acchead .hs .pick{color:var(--red); font-weight:600;}
+.acchead .chev{width:30px; height:30px; flex:none; border-radius:50%; border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center; transition:transform .35s var(--ease), border-color .25s var(--ease);}
+.acchead .chev svg{width:15px; height:15px; color:#fff;}
+.accsec.open .acchead .chev{transform:rotate(180deg); border-color:var(--red);}
+.accbody{display:grid; grid-template-rows:0fr; transition:grid-template-rows .45s var(--ease);}
+.accsec.open .accbody{grid-template-rows:1fr;}
+.accbody > .inner{overflow:hidden;}
+.accbody .pad{padding:2px 20px 22px;}
+.timeshead{font-family:var(--label); font-size:12px; font-weight:700; letter-spacing:.04em; color:#fff; margin:20px 0 14px;}
+
+/* month switcher */
+.monthnav{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px;}
+.monthnav .mlabel{font-family:var(--display); font-weight:600; font-size:1.12rem; color:#fff; letter-spacing:.01em;}
+.monthnav .mbtn{width:38px; height:38px; flex:none; border-radius:9px; border:1px solid var(--field-line); background:var(--field);
+  color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:border-color .25s var(--ease), background .25s var(--ease), opacity .25s var(--ease);}
+.monthnav .mbtn:hover:not(:disabled){border-color:var(--red); background:rgba(227,6,19,.08);}
+.monthnav .mbtn:disabled{opacity:.28; cursor:not-allowed;}
+.monthnav .mbtn svg{width:16px; height:16px;}
+
+/* date chips */
+.dates{display:flex; gap:10px; min-width:0; overflow-x:auto; padding:8px 0 12px; scrollbar-width:thin; scroll-behavior:smooth;}
+.dates::-webkit-scrollbar{height:5px;} .dates::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16); border-radius:4px;}
+.datechip{flex:none; width:78px; cursor:pointer; border:1px solid var(--field-line); border-radius:10px;
+  padding:12px 0; text-align:center; background:var(--field);
+  transition:border-color .25s var(--ease), background .25s var(--ease), transform .25s var(--ease);}
+.datechip:hover{border-color:rgba(255,255,255,.45); transform:translateY(-2px);}
+.datechip .dow{font-family:var(--label); font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.5);}
+.datechip .dnum{font-family:var(--display); font-weight:600; font-size:1.5rem; color:#fff; line-height:1.1; margin-top:4px;}
+.datechip .mon{font-family:var(--body); font-size:.74rem; color:rgba(255,255,255,.48); margin-top:2px;}
+.datechip.sel{border-color:var(--red); background:rgba(227,6,19,.1);}
+.datechip.sel .dow{color:var(--red);}
+.datechip.off{opacity:.26; pointer-events:none; cursor:default;}
+
+/* time chips */
+.times{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+.timechip{cursor:pointer; border:1px solid var(--field-line); border-radius:9px; padding:13px 0; text-align:center;
+  font-family:var(--label); font-weight:600; font-size:.94rem; color:rgba(255,255,255,.86); background:var(--field);
+  transition:border-color .25s var(--ease), background .25s var(--ease);}
+.timechip:hover{border-color:rgba(255,255,255,.45);}
+.timechip.sel{border-color:var(--red); background:rgba(227,6,19,.1); color:#fff;}
+
+/* location radio-cards */
+.loc{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+.locopt{position:relative; cursor:pointer; border:1px solid var(--field-line); border-radius:10px; padding:16px 16px;
+  transition:border-color .25s var(--ease), background .25s var(--ease);}
+.locopt .lhead{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+.locopt svg{width:19px; height:19px; color:rgba(255,255,255,.7);}
+.locopt .tick{width:16px; height:16px; border-radius:50%; border:1px solid rgba(255,255,255,.34); flex:none;
+  display:flex; align-items:center; justify-content:center; transition:border-color .25s var(--ease), background .25s var(--ease);}
+.locopt .tick::before{content:""; width:7px; height:7px; border-radius:50%; background:#fff; transform:scale(0); transition:transform .25s var(--ease);}
+.locopt .lt{font-family:var(--label); font-weight:600; font-size:.96rem; color:#fff; margin-top:12px;}
+.locopt .ld{font-family:var(--body); font-size:.8rem; line-height:1.4; color:rgba(255,255,255,.5); margin-top:4px;}
+.locopt:hover{border-color:rgba(255,255,255,.45);}
+.locopt.sel{border-color:var(--red); background:rgba(227,6,19,.08);}
+.locopt.sel svg{color:var(--red);}
+.locopt.sel .tick{border-color:var(--red); background:var(--red);}
+.locopt.sel .tick::before{transform:scale(1);}
+
+/* field */
+.field{display:flex; flex-direction:column; gap:8px;}
+.field label{font-family:var(--label); font-size:12px; font-weight:600; letter-spacing:.04em; color:rgba(255,255,255,.78);}
+.field .help{font-family:var(--body); font-size:.8rem; line-height:1.45; color:rgba(255,255,255,.46);}
+.field input{width:100%; height:50px; padding:0 16px; background:var(--field); border:1px solid var(--field-line);
+  border-radius:7px; color:#fff; font-family:var(--body); font-size:1rem; outline:none;
+  transition:border-color .25s var(--ease), background .25s var(--ease), box-shadow .25s var(--ease);}
+.field input::placeholder{color:rgba(255,255,255,.34);}
+.field input:focus{border-color:var(--field-line-focus); background:rgba(255,255,255,.06); box-shadow:0 0 0 3px rgba(227,6,19,.14);}
+.field .prefill{display:inline-flex; align-items:center; gap:6px; font-family:var(--label); font-size:10.5px; font-weight:600;
+  letter-spacing:.1em; text-transform:uppercase; color:#27c07a;}
+.field .prefill svg{width:13px; height:13px;}
+
+/* disclosure ack (REQUIRED proof-of-disclosure tick — §4.6) */
+.disclosure{display:flex; align-items:flex-start; gap:13px; margin-top:clamp(28px,3.6vh,40px);
+  padding:18px 20px; border:1px solid var(--line); border-radius:11px; background:rgba(0,0,0,.22);}
+.disclosure input{appearance:none; -webkit-appearance:none; width:22px; height:22px; flex:none; margin-top:1px;
+  border:1.5px solid rgba(255,255,255,.34); border-radius:6px; background:rgba(255,255,255,.04); cursor:pointer; position:relative;
+  transition:border-color .2s var(--ease), background .2s var(--ease);}
+.disclosure input:hover{border-color:rgba(255,255,255,.55);}
+.disclosure input:checked{background:var(--red); border-color:var(--red);}
+.disclosure input:checked::before{content:""; position:absolute; left:7px; top:3px; width:5px; height:10px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);}
+.disclosure label{font-family:var(--body); font-size:.9rem; line-height:1.55; color:rgba(255,255,255,.8); cursor:pointer;}
+.disclosure label b{color:#fff; font-weight:600;}
+
+.book-error{display:none; font-family:var(--body); font-size:.86rem; color:var(--red); margin-top:14px; font-weight:500;}
+.book-error.show{display:block;}
+
+.confirm-row{margin-top:clamp(24px,3.2vh,34px);}
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; height:56px; padding:0 32px; border:0;
+  cursor:pointer; font-family:var(--label); font-weight:700; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+  text-decoration:none; transition:background .2s, box-shadow .35s var(--ease), color .2s, border-color .2s;}
+.btn--cta{width:100%; background:var(--red); color:#fff; clip-path:polygon(0 0,100% 0,98% 100%,0 100%);
+  box-shadow:0 14px 38px -12px rgba(227,6,19,.6);}
+.btn--cta:hover{background:#fff; color:var(--black); box-shadow:0 14px 38px -12px rgba(227,6,19,.25);}
+.btn--cta svg{width:15px; height:15px; transition:transform .3s var(--ease);}
+.btn--cta:hover svg{transform:translateX(4px);}
+.confirm-row .micro{display:block; text-align:center; font-family:var(--body); font-size:.78rem; color:rgba(255,255,255,.42); margin-top:14px;}
+
+/* ---------- ASIDE ---------- */
+.aside{display:flex; flex-direction:column; gap:16px; min-width:0; position:sticky; top:96px;}
+.acard{border:1px solid var(--line); border-radius:13px; padding:22px 22px; background:rgba(255,255,255,.025);}
+.acard .atitle{font-family:var(--label); font-size:10.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--red); margin-bottom:14px;}
+
+/* recap */
+.recap .rtop{display:flex; align-items:center; gap:14px;}
+.recap .plate{display:flex; align-items:stretch; height:38px; width:142px; flex:none;
+  background:var(--plate-yellow); border:2px solid #0a0a0a; border-radius:5px; overflow:hidden;}
+.recap .plate .gb{background:var(--plate-blue); color:#fff; width:21px; display:flex; flex-direction:column;
+  align-items:center; justify-content:flex-end; gap:1px; padding-bottom:4px; font-size:7px; font-weight:700;}
+.recap .plate .gb .stars{font-size:5px;color:#FFD400}
+.recap .plate .reg{flex:1; display:flex; align-items:center; justify-content:center; font-family:var(--label);
+  font-weight:700; color:var(--plate-ink); font-size:15px; letter-spacing:.04em;}
+.recap .mm{font-family:var(--display); font-weight:600; font-size:1.08rem; color:#fff; line-height:1.15;}
+.recap .range{margin-top:16px; padding-top:16px; border-top:1px solid var(--line);}
+.recap .range .rl{font-family:var(--body); font-size:.78rem; letter-spacing:.04em; text-transform:uppercase; color:rgba(255,255,255,.5);}
+.recap .range .rv{font-family:var(--label); font-weight:700; font-size:1.32rem; color:#fff; margin-top:5px; font-variant-numeric:tabular-nums;}
+.recap .range .rv span{color:var(--red); font-weight:400;}
+.recap .range .rd{font-family:var(--body); font-size:.76rem; line-height:1.5; color:rgba(255,255,255,.46); margin-top:8px;}
+
+/* bring checklist */
+.bring ul{list-style:none; display:flex; flex-direction:column; gap:12px;}
+.bring li{display:flex; align-items:flex-start; gap:11px; font-family:var(--body); font-size:.9rem; line-height:1.45; color:rgba(255,255,255,.78);}
+.bring li svg{width:17px; height:17px; color:var(--red); flex:none; margin-top:1px;}
+.bring .close{margin-top:16px; padding-top:14px; border-top:1px solid var(--line);
+  font-family:var(--body); font-size:.82rem; line-height:1.5; color:rgba(255,255,255,.52);}
+
+/* named specialist */
+.spec{display:flex; align-items:center; gap:14px;}
+.spec .ava{width:46px; height:46px; flex:none; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-family:var(--display); font-weight:600; font-size:1.1rem; color:#fff; background:linear-gradient(135deg,var(--red),var(--red-dark));
+  box-shadow:0 8px 22px -8px rgba(227,6,19,.6);}
+.spec .sname{font-family:var(--display); font-weight:600; font-size:1.05rem; color:#fff;}
+.spec .srole{font-family:var(--body); font-size:.82rem; color:rgba(255,255,255,.54); margin-top:2px;}
+
+/* confirmed overlay (preview stand-in for navigate → /thank-you) */
+.confirmed{display:none; text-align:center; padding:clamp(36px,7vh,72px) 0;}
+.confirmed.show{display:block; animation:fadeUp .6s var(--ease);}
+@keyframes fadeUp{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:none;}}
+.confirmed .badge{width:64px; height:64px; margin:0 auto 22px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  background:rgba(39,192,122,.12); border:1px solid rgba(39,192,122,.4);}
+.confirmed .badge svg{width:30px; height:30px; color:#27c07a;}
+.confirmed h2{font-family:var(--display); font-weight:500; font-size:1.9rem; color:#fff;}
+.confirmed h2 .accent{color:var(--red); font-style:italic;}
+.confirmed p{font-family:var(--body); font-size:.98rem; line-height:1.6; color:rgba(255,255,255,.64); margin-top:12px; max-width:46ch; margin-left:auto; margin-right:auto;}
+.confirmed .demo-note{font-family:var(--label); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.34); margin-top:24px;}
+
+/* ---------- FOOTER ---------- */
+.foot{position:relative; z-index:3; border-top:1px solid var(--line); padding:26px clamp(20px,5vw,64px);
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px;}
+.foot .fbrand{font-family:var(--display); font-weight:600; font-size:1rem; color:rgba(255,255,255,.8);}
+.foot .fdis{font-family:var(--body); font-size:.78rem; color:var(--faint); max-width:64ch;}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr;}
+  .aside{position:static; flex-direction:column;}
+}
+@media (max-width:560px){
+  .times{grid-template-columns:repeat(3,1fr);}
+  .loc{grid-template-columns:1fr;}
+}
+@media (prefers-reduced-motion:reduce){
+  .header{transition:none; transform:none; opacity:1;}
+  .datechip:hover{transform:none;}
+  .confirmed.show{animation:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ---------- HEADER ---------- -->
+<header class="header" id="siteheader">
+  <a class="brand" href="landing.html"><span class="mark">RACE<b>LINE</b></span><span class="sub">Specialist Cars</span></a>
+  <a class="navphone" href="tel:+441423798781"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>01632 960210</span></a>
+</header>
+
+<main class="book">
+  <div class="wrap">
+
+    <!-- HEADER LINE -->
+    <div class="bookhead" id="headBlock">
+      <span class="eyebrow reveal">Final step</span>
+      <h1 class="reveal" style="--d:.05s">Almost done — <span class="accent">confirm your appraisal.</span></h1>
+      <p class="sub reveal" style="--d:.1s">Your indicative range is based on what you've told us. The appointment is where we confirm it — properly, in person.</p>
+    </div>
+
+    <!-- LAYOUT -->
+    <div class="layout" id="formArea">
+
+      <!-- MAIN FORM CARD -->
+      <section class="maincard reveal">
+
+        <!-- BOOKING ACCORDION (dropdown sections) -->
+        <div class="acc" id="acc">
+
+          <!-- SECTION 1 — Date & time -->
+          <section class="accsec open" data-acc="1">
+            <button class="acchead" type="button">
+              <span class="n">1</span>
+              <span class="htxt"><span class="ht">Date &amp; time</span><span class="hs" id="sum1">Pick a day and a slot that suits you</span></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></span>
+            </button>
+            <div class="accbody"><div class="inner"><div class="pad">
+              <div class="monthnav">
+                <button class="mbtn" id="prevMonth" type="button" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
+                <span class="mlabel" id="monthLabel">Month</span>
+                <button class="mbtn" id="nextMonth" type="button" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
+              </div>
+              <div class="dates" id="dates"><!-- date chips injected by JS --></div>
+              <div class="timeshead">Choose a time</div>
+              <div class="times" id="times"><!-- time chips injected by JS --></div>
+            </div></div></div>
+          </section>
+
+          <!-- SECTION 2 — Location -->
+          <section class="accsec" data-acc="2">
+            <button class="acchead" type="button">
+              <span class="n">2</span>
+              <span class="htxt"><span class="ht">Where would you like the appraisal?</span><span class="hs" id="sum2">Your place, our showroom, or virtual</span></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></span>
+            </button>
+            <div class="accbody"><div class="inner"><div class="pad">
+              <div class="loc" id="loc">
+                <label class="locopt">
+                  <div class="lhead"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg><span class="tick"></span></div>
+                  <div class="lt">Come to me</div>
+                  <div class="ld">We appraise at your home or storage, UK-wide.</div>
+                </label>
+                <label class="locopt">
+                  <div class="lhead"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 21h18M5 21V7l8-4 8 4v14M9 9h.01M9 13h.01M15 9h.01M15 13h.01"/></svg><span class="tick"></span></div>
+                  <div class="lt">Our showroom</div>
+                  <div class="ld">Visit us in Harrogate — coffee's on.</div>
+                </label>
+                <label class="locopt">
+                  <div class="lhead"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M23 7l-7 5 7 5zM1 5h15v14H1z"/></svg><span class="tick"></span></div>
+                  <div class="lt">Virtual</div>
+                  <div class="ld">A video walk-round if that's easier first.</div>
+                </label>
+              </div>
+            </div></div></div>
+          </section>
+
+        </div>
+
+        <!-- CONFIRM PHONE (pre-filled) -->
+        <div class="block">
+          <div class="field">
+            <label for="inputConfirmPhone">Best number for the appraisal call <span class="prefill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>From your valuation</span></label>
+            <input id="inputConfirmPhone" type="tel" value="07700 900 482">
+            <span class="help">Pre-filled from your valuation — change it if you'd rather we used another number.</span>
+          </div>
+        </div>
+
+        <!-- DISCLOSURE ACK (§4.6 proof-of-disclosure) -->
+        <div class="disclosure">
+          <input id="chkDisclosureAck" type="checkbox">
+          <label for="chkDisclosureAck">I understand this is an <b>indicative guide, not a binding offer</b>, and my final figure is confirmed at the appraisal.</label>
+        </div>
+
+        <p class="book-error" id="bookError">Please choose a date, a time, where you'd like the appraisal, and tick the box above so we can confirm your appointment.</p>
+
+        <!-- CONFIRM CTA -->
+        <div class="confirm-row">
+          <button class="btn btn--cta" id="btnConfirmAppraisal">Confirm appraisal
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <span class="micro">No pressure, no hard sell — just a time to talk about your car.</span>
+        </div>
+      </section>
+
+      <!-- ASIDE -->
+      <aside class="aside">
+        <!-- carried-over recap -->
+        <div class="acard recap reveal" style="--d:.08s">
+          <div class="atitle">Your car</div>
+          <div class="rtop">
+            <div class="plate"><div class="gb"><span class="stars">★</span>UK</div><div class="reg">RS19 LDN</div></div>
+            <div class="mm">2019 Porsche 911<br>Carrera S</div>
+          </div>
+          <div class="range">
+            <div class="rl">Indicative range</div>
+            <div class="rv">£64,000 <span>–</span> £72,000</div>
+            <div class="rd">A guide based on what you've told us — confirmed in person, never before.</div>
+          </div>
+        </div>
+
+        <!-- what to bring -->
+        <div class="acard bring reveal" style="--d:.12s">
+          <div class="atitle">What to bring</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>V5C registration document</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Photo ID</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Service history &amp; paperwork</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Every set of keys (including spares)</li>
+          </ul>
+          <p class="close">If anything's awaiting paperwork, bring what you have and we'll work it out.</p>
+        </div>
+
+        <!-- named specialist -->
+        <div class="acard reveal" style="--d:.16s">
+          <div class="atitle">Who you'll meet</div>
+          <div class="spec">
+            <div class="ava">JH</div>
+            <div>
+              <div class="sname">James Hartley</div>
+              <div class="srole">Senior buyer · Raceline Specialist Cars</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- CONFIRMED (preview stand-in for navigate → /thank-you) -->
+    <section class="confirmed" id="confirmed">
+      <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <h2>Appraisal <span class="accent">confirmed.</span></h2>
+      <p>In the live funnel this books your slot and takes you to the thank-you page — and James calls you within one working day to confirm.</p>
+      <p class="demo-note">Preview only — no booking is made</p>
+    </section>
+
+  </div>
+</main>
+
+<!-- ---------- FOOTER ---------- -->
+<footer class="foot">
+  <span class="fbrand">Raceline Specialist Cars</span>
+  <span class="fdis">Indicative guide only — not a binding offer. Final figure confirmed in writing at the in-person appraisal. Raceline Specialist Cars is authorised &amp; regulated by the FCA (FRN 000000). Your details are used only to arrange your appraisal and are never sold or shared.</span>
+</footer>
+
+<script>
+/* header slide-in */
+requestAnimationFrame(()=>document.getElementById('siteheader').classList.add('ready'));
+
+/* reveal on load (page is mostly above fold) */
+requestAnimationFrame(()=>{ document.getElementById('headBlock').classList.add('in'); document.getElementById('formArea').classList.add('in'); });
+
+/* ---- month-based date picker: every day of the chosen month in the scroll ---- */
+const datesEl = document.getElementById('dates');
+const monthLabel = document.getElementById('monthLabel');
+const prevBtn = document.getElementById('prevMonth');
+const nextBtn = document.getElementById('nextMonth');
+const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MON_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_AHEAD = 6;                 // how far forward you can book
+const today = new Date(); today.setHours(0,0,0,0);
+let viewY = today.getFullYear(), viewM = today.getMonth();   // month currently shown
+let selectedKey = null;                 // 'Y-M-D' of the picked day (survives month changes)
+let selectedDateText = null, selectedTime = null, selectedLoc = null;
+
+function monthIndex(y,m){ return y*12 + m; }
+const minIdx = monthIndex(today.getFullYear(), today.getMonth());
+const maxIdx = minIdx + MONTHS_AHEAD;
+
+function renderMonth(){
+  monthLabel.textContent = MON_FULL[viewM] + ' ' + viewY;
+  const idx = monthIndex(viewY, viewM);
+  prevBtn.disabled = idx <= minIdx;
+  nextBtn.disabled = idx >= maxIdx;
+  datesEl.innerHTML = '';
+  const daysInMonth = new Date(viewY, viewM + 1, 0).getDate();
+  let firstEnabled = null;
+  for(let day=1; day<=daysInMonth; day++){
+    const d = new Date(viewY, viewM, day);
+    const key = viewY+'-'+viewM+'-'+day;
+    const off = (d < today) || (d.getDay() === 0);   // past days + Sundays = closed
+    const chip = document.createElement('div');
+    chip.className = 'datechip' + (off ? ' off' : '') + (key===selectedKey ? ' sel' : '');
+    chip.dataset.key = key;
+    chip.innerHTML = '<div class="dow">'+DOW[d.getDay()]+'</div><div class="dnum">'+day+'</div><div class="mon">'+MON[viewM]+'</div>';
+    if(!off){
+      if(!firstEnabled) firstEnabled = chip;
+      const dateText = DOW[d.getDay()]+' '+day+' '+MON[viewM];
+      chip.addEventListener('click', ()=>{
+        selectedKey = key; selectedDateText = dateText;
+        datesEl.querySelectorAll('.datechip').forEach(c=>c.classList.remove('sel'));
+        chip.classList.add('sel');
+        updateSummaries();
+      });
+    }
+    datesEl.appendChild(chip);
+  }
+  // start the scroll at the first bookable day (skip greyed past days)
+  datesEl.scrollLeft = firstEnabled ? Math.max(0, firstEnabled.offsetLeft - datesEl.offsetLeft - 4) : 0;
+}
+prevBtn.addEventListener('click', ()=>{ if(monthIndex(viewY,viewM)>minIdx){ if(--viewM<0){viewM=11;viewY--;} renderMonth(); } });
+nextBtn.addEventListener('click', ()=>{ if(monthIndex(viewY,viewM)<maxIdx){ if(++viewM>11){viewM=0;viewY++;} renderMonth(); } });
+renderMonth();
+
+/* ---- time slots: half-hourly across the working day ---- */
+const timesEl = document.getElementById('times');
+for(let h=8; h<=18; h++){
+  ['00','30'].forEach(mm=>{
+    const t = String(h).padStart(2,'0')+':'+mm;
+    const chip = document.createElement('div');
+    chip.className = 'timechip';
+    chip.textContent = t;
+    chip.addEventListener('click', ()=>{
+      selectedTime = t;
+      timesEl.querySelectorAll('.timechip').forEach(c=>c.classList.remove('sel'));
+      chip.classList.add('sel');
+      updateSummaries();
+    });
+    timesEl.appendChild(chip);
+  });
+}
+
+/* ---- location ---- */
+const locEl = document.getElementById('loc');
+locEl.querySelectorAll('.locopt').forEach(opt=>{
+  opt.addEventListener('click', ()=>{
+    selectedLoc = opt.querySelector('.lt').textContent.trim();
+    locEl.querySelectorAll('.locopt').forEach(o=>o.classList.remove('sel'));
+    opt.classList.add('sel');
+    updateSummaries();
+  });
+});
+
+/* ---- collapsed-header summaries ---- */
+function updateSummaries(){
+  const s1 = document.getElementById('sum1');
+  if(selectedDateText && selectedTime){ s1.innerHTML = '<span class="pick">'+selectedDateText+' · '+selectedTime+'</span>'; }
+  else if(selectedDateText){ s1.innerHTML = '<span class="pick">'+selectedDateText+'</span> — now pick a time'; }
+  else { s1.textContent = 'Pick a day and a slot that suits you'; }
+  const s2 = document.getElementById('sum2');
+  s2.innerHTML = selectedLoc ? '<span class="pick">'+selectedLoc+'</span>' : 'Your place, our showroom, or virtual';
+}
+
+/* ---- accordion: one open at a time ---- */
+document.querySelectorAll('#acc .acchead').forEach(head=>{
+  head.addEventListener('click', ()=>{
+    const sec = head.closest('.accsec');
+    const wasOpen = sec.classList.contains('open');
+    document.querySelectorAll('#acc .accsec').forEach(s=>s.classList.remove('open'));
+    if(!wasOpen) sec.classList.add('open');
+  });
+});
+
+/* confirm */
+document.getElementById('btnConfirmAppraisal').addEventListener('click', ()=>{
+  const phone = document.getElementById('inputConfirmPhone').value.trim();
+  const ack  = document.getElementById('chkDisclosureAck').checked;
+  const err  = document.getElementById('bookError');
+  if(!selectedKey || !selectedTime || !selectedLoc || !phone || !ack){ err.classList.add('show'); return; }
+  err.classList.remove('show');
+  document.getElementById('formArea').style.display = 'none';
+  document.getElementById('headBlock').style.display = 'none';
+  document.getElementById('confirmed').classList.add('show');
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raceline Specialist Cars — Sell your car, the considered way</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RACELINE — /sell-my-car  ·  FULL ASSEMBLED LANDING PAGE (V3)
+   8 locked standalone blocks stitched into one self-contained
+   page: header · hero · §2 problem→solution · §3 how-it-works ·
+   §4 social-proof · §5 FAQ · §6 final-CTA · footer.
+   Every section's CSS is scoped under its root class
+   (.header/.hero/.ps/.hiw/.sp/.faq/.cta-s/.footer) so the shared
+   generic class names (.inner/.reveal/.cta/.nav/.photo/.eyebrow…)
+   don't cross-contaminate. Shared design tokens, the film-grain
+   texture and the .reveal fade-up are de-duped into the globals.
+   System (locked): Playfair Display + Inter · red #E30613 ·
+   obsidian #08080A · ease (.16,1,.3,1).
+   INTERNAL Raceline demo skin only (G-RL). INDICATIVE-only copy.
+   ============================================================ */
+
+/* ===================== GLOBAL TOKENS ===================== */
+:root{
+  --red:#E30613; --red-dark:#B00510;
+  --black:#08080A; --ink:#FFFFFF; --muted:#A6A6AD; --faint:#6E6E76; --line:rgba(255,255,255,.13);
+  --plate-yellow:#FFD400; --plate-blue:#063298; --plate-ink:#111111;
+  --display:'Playfair Display',serif; --label:'Inter',sans-serif; --body:'Inter',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1); --dwell:6.5s;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* per-section hairline / muted overrides (keeps each locked section pixel-true) */
+.header,.hero,.ps{--line:rgba(255,255,255,.14);}
+.cta-s{--muted:#B7B7BE; --line:rgba(255,255,255,.16);}
+.footer{--muted:#9A9AA2; --line:rgba(255,255,255,.12);}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body); background:var(--black); color:var(--ink);
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; overflow-x:hidden;}
+section[id], footer[id]{scroll-margin-top:92px;}
+
+/* shared scroll-reveal fade-up (each section root toggles .in) */
+.reveal{opacity:0; transform:translateY(24px);
+  transition:opacity .9s var(--ease), transform .9s var(--ease); transition-delay:var(--d,0s);}
+.in .reveal{opacity:1; transform:none;}
+@media (prefers-reduced-motion:reduce){ .reveal{transition:none; opacity:1; transform:none;} }
+
+/* ========================= HEADER ========================= */
+.header{position:fixed; top:0; left:0; right:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  padding:22px clamp(20px,5vw,64px);
+  background:linear-gradient(180deg, rgba(8,8,10,.55) 0%, rgba(8,8,10,0) 100%);
+  border-bottom:1px solid transparent;
+  transition:padding .45s var(--ease), background .45s var(--ease), border-color .45s var(--ease), backdrop-filter .45s var(--ease);
+  transform:translateY(-100%); opacity:0;}
+.header.ready{transform:translateY(0); opacity:1; transition:transform .9s var(--ease) .1s, opacity .9s var(--ease) .1s;}
+.header.scrolled{padding-top:13px; padding-bottom:13px;
+  background:rgba(8,8,10,.82); -webkit-backdrop-filter:saturate(1.2) blur(14px); backdrop-filter:saturate(1.2) blur(14px);
+  border-bottom:1px solid var(--line); box-shadow:0 14px 40px -22px rgba(0,0,0,.9);}
+.header.scrolled.ready{transition:padding .45s var(--ease), background .45s var(--ease), border-color .45s var(--ease), backdrop-filter .45s var(--ease);}
+.header .brand{display:flex; align-items:center; gap:11px; text-decoration:none; flex:none;}
+.header .brand .mark{font-family:var(--label); font-weight:700; font-size:20px; letter-spacing:.10em; color:#fff;}
+.header .brand .mark b{color:var(--red);}
+.header .brand .sub{font-family:var(--body); font-size:9.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--muted);}
+.header .navlinks{display:flex; align-items:center; gap:30px;}
+.header .navlinks a{position:relative; font-family:var(--body); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:rgba(255,255,255,.78); text-decoration:none; transition:color .25s var(--ease);}
+.header .navlinks a:hover{color:#fff;}
+.header .navlinks a::after{content:""; position:absolute; left:0; bottom:-7px; width:0; height:1.5px; background:var(--red);
+  transition:width .3s var(--ease);}
+.header .navlinks a:hover::after{width:100%;}
+.header .right{display:flex; align-items:center; gap:14px; flex:none;}
+.header .navphone{display:inline-flex; align-items:center; gap:8px; font-family:var(--label); font-size:13px; font-weight:500;
+  color:#fff; text-decoration:none; padding:9px 16px; border:1px solid var(--line); border-radius:3px;
+  transition:background .25s var(--ease), border-color .25s var(--ease);}
+.header .navphone svg{width:14px; height:14px; color:var(--red); transition:color .25s var(--ease);}
+.header .navphone:hover{background:var(--red); border-color:var(--red);}
+.header .navphone:hover svg{color:#fff;}
+.header .cta{display:inline-flex; align-items:center; gap:9px; height:42px; padding:0 22px; border:0; cursor:pointer;
+  background:var(--red); color:#fff; font-family:var(--label); font-weight:700; font-size:11.5px; letter-spacing:.12em;
+  text-transform:uppercase; text-decoration:none; clip-path:polygon(0 0,100% 0,95% 100%,0 100%);
+  transition:background .2s, box-shadow .35s var(--ease); box-shadow:0 8px 26px -10px rgba(227,6,19,.6);}
+.header .cta:hover{background:#fff; color:var(--black); box-shadow:0 8px 26px -10px rgba(227,6,19,.2);}
+.header .cta svg{width:14px; height:14px; transition:transform .3s var(--ease);}
+.header .cta:hover svg{transform:translateX(3px);}
+@media (max-width:1040px){ .header .navlinks{display:none;} }
+@media (max-width:620px){ .header .navphone span{display:none;} .header .navphone{padding:9px 12px;} .header .brand .sub{display:none;} }
+@media (prefers-reduced-motion:reduce){ .header{transition:none; transform:none; opacity:1;} }
+
+/* ========================== HERO ========================== */
+.hero{position:relative; width:100%; min-height:100vh; overflow:hidden; display:flex; flex-direction:column;}
+.hero .bg{position:absolute; inset:0; z-index:0; background:#000;}
+.hero .bg img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  will-change:opacity,transform,clip-path; filter:saturate(1.06) contrast(1.12) brightness(.92);}
+.hero .bg img.base{opacity:1; animation:kbslow 13.5s infinite ease-in-out;}
+.hero .bg img.w1{opacity:1; animation:wipe1 13.5s infinite cubic-bezier(.7,0,.2,1);}
+.hero .bg img.w2{opacity:1; animation:wipe2 13.5s infinite cubic-bezier(.7,0,.2,1);}
+@keyframes wipe1{
+  0%  {clip-path:polygon(0 0,0 0,-25% 100%,0 100%)}
+  4%  {clip-path:polygon(0 0,108% 0,100% 100%,0 100%)}
+  30% {clip-path:polygon(0 0,108% 0,100% 100%,0 100%)}
+  36% {clip-path:polygon(108% 0,108% 0,100% 100%,100% 100%)}
+  100%{clip-path:polygon(108% 0,108% 0,100% 100%,100% 100%)}
+}
+@keyframes wipe2{
+  0%  {clip-path:polygon(108% 0,108% 0,100% 100%,100% 100%)}
+  33% {clip-path:polygon(108% 0,108% 0,100% 100%,100% 100%)}
+  37% {clip-path:polygon(0 0,108% 0,100% 100%,0 100%)}
+  63% {clip-path:polygon(0 0,108% 0,100% 100%,0 100%)}
+  69% {clip-path:polygon(108% 0,108% 0,100% 100%,100% 100%)}
+  100%{clip-path:polygon(108% 0,108% 0,100% 100%,100% 100%)}
+}
+@keyframes kbslow{ 0%{transform:scale(1.04)} 50%{transform:scale(1.10)} 100%{transform:scale(1.04)} }
+.hero .scrim{position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+   linear-gradient(105deg, rgba(8,8,10,.90) 0%, rgba(8,8,10,.55) 40%, rgba(8,8,10,.05) 68%, rgba(8,8,10,.25) 100%),
+   linear-gradient(0deg, rgba(8,8,10,.78) 0%, rgba(8,8,10,.10) 40%, transparent 70%);}
+.hero .speedline{position:absolute; top:0; bottom:0; width:3px; z-index:4; pointer-events:none;
+  background:linear-gradient(180deg,transparent,var(--red),transparent); opacity:.0;
+  box-shadow:0 0 26px 4px rgba(227,6,19,.55); animation:sweep 4.5s linear infinite;}
+@keyframes sweep{ 0%{left:-2%; opacity:0} 6%{opacity:.9} 14%{opacity:0} 100%{left:104%; opacity:0} }
+.hero .wrap{position:relative; z-index:10; flex:1; display:flex; align-items:flex-start;
+  padding:clamp(104px, 12vh, 144px) clamp(20px,5vw,64px) 0;}
+.hero .copy{max-width:920px;}
+.hero .kicker{display:inline-flex; align-items:center; gap:12px; font-family:var(--label);
+  font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:#fff;
+  background:var(--red); padding:8px 15px; margin-bottom:20px; clip-path:polygon(0 0,100% 0,94% 100%,0 100%);}
+.hero h1{font-family:var(--display); font-weight:500; font-size:clamp(2.6rem,1.4rem + 4.3vw,5.1rem);
+  line-height:1.04; letter-spacing:-0.005em; text-transform:none; color:#fff; text-wrap:balance;}
+.hero h1 .line2{display:block;}
+.hero h1 .accent{color:var(--red); font-style:italic; font-weight:600;}
+.hero .sub{font-family:var(--body); font-size:clamp(1rem,.96rem + .2vw,1.12rem); line-height:1.65;
+  color:rgba(255,255,255,.74); max-width:50ch; margin-top:20px; letter-spacing:.005em;}
+.hero .action{display:flex; flex-wrap:wrap; align-items:stretch; gap:14px; margin-top:28px;}
+.hero .plate{display:flex; align-items:stretch; height:62px; width:266px; max-width:62vw;
+  background:var(--plate-yellow); border:2px solid #0a0a0a; border-radius:7px; overflow:hidden;
+  box-shadow:0 7px 20px rgba(0,0,0,.34);}
+.hero .plate .gb{background:var(--plate-blue); color:#fff; width:34px; display:flex; flex-direction:column;
+  align-items:center; justify-content:flex-end; gap:2px; padding-bottom:7px; font-size:11px; font-weight:700;}
+.hero .plate .gb .stars{font-size:8px;color:#FFD400}
+.hero .plate input{flex:1; border:0; background:transparent; outline:none; font-family:var(--label);
+  font-weight:700; color:var(--plate-ink); font-size:22px; letter-spacing:.06em; text-align:center; text-transform:uppercase; min-width:0;}
+.hero .plate input::placeholder{color:rgba(17,17,17,.5); font-weight:600; letter-spacing:.03em; font-size:18px;}
+.hero .cta{display:inline-flex; align-items:center; justify-content:center; gap:11px; height:62px; padding:0 32px;
+  border:0; cursor:pointer; background:var(--red); color:#fff; font-family:var(--label); font-weight:700;
+  font-size:12.5px; letter-spacing:.13em; text-transform:uppercase; text-decoration:none;
+  clip-path:polygon(0 0,100% 0,96% 100%,0 100%); transition:background .2s;}
+.hero .cta:hover{background:#fff; color:var(--black)}
+.hero .cta svg{width:16px;height:16px}
+.hero .microcopy{font-family:var(--body); font-size:13px; color:var(--muted); margin-top:14px;}
+.hero .ticker{position:relative; z-index:10; border-top:1px solid var(--line); background:rgba(8,8,10,.55);
+  backdrop-filter:blur(3px); overflow:hidden; white-space:nowrap;}
+.hero .ticker .track{display:inline-flex; align-items:center; gap:0; padding:15px 0;
+  animation:scroll 26s linear infinite;}
+.hero .ticker .item{font-family:var(--label); font-weight:500; font-size:12px; letter-spacing:.14em;
+  text-transform:uppercase; color:rgba(255,255,255,.78); padding:0 26px; display:inline-flex; align-items:center; gap:26px;}
+.hero .ticker .item::after{content:""; width:6px; height:6px; background:var(--red); border-radius:50%;}
+@keyframes scroll{to{transform:translateX(-50%)}}
+.hero .reveal{opacity:0; transform:translateY(20px); animation:rise .8s var(--ease) forwards;}
+.hero .reveal.d1{animation-delay:.1s}.hero .reveal.d2{animation-delay:.24s}.hero .reveal.d3{animation-delay:.4s}
+.hero .reveal.d4{animation-delay:.56s}.hero .reveal.d5{animation-delay:.7s}
+@keyframes rise{to{opacity:1;transform:none}}
+@media (max-width:760px){.hero .cta{width:100%}}
+@media (prefers-reduced-motion:reduce){
+  .hero .bg img.w1,.hero .bg img.w2{display:none} .hero .bg img{animation:none} .hero .speedline{display:none}
+  .hero .ticker .track{animation:none} .hero .reveal{animation:none;opacity:1;transform:none}
+}
+
+/* =============== §2  PROBLEM → SOLUTION (.ps) =============== */
+.ps{position:relative; width:100%; overflow:hidden; background:var(--black); isolation:isolate;
+  background-image:radial-gradient(120% 90% at 6% 0%, rgba(227,6,19,.10) 0%, rgba(227,6,19,0) 44%);}
+.ps::after{content:""; position:absolute; inset:0; z-index:5; pointer-events:none; opacity:.045; mix-blend-mode:overlay;
+  background-image:var(--grain);}
+.ps .photo{position:absolute; top:0; right:0; bottom:0; width:74%; z-index:0; overflow:hidden; opacity:0;
+  transition:opacity 1.3s var(--ease) .15s;
+  -webkit-mask-image:linear-gradient(102deg, transparent 0%, rgba(0,0,0,0) 6%, #000 30%, #000 100%);
+          mask-image:linear-gradient(102deg, transparent 0%, rgba(0,0,0,0) 6%, #000 30%, #000 100%);}
+.ps.in .photo{opacity:1;}
+.ps .photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:56% 42%;
+  filter:saturate(.72) contrast(1.12) brightness(.86); transform:scale(1.32);}
+.ps .veil{position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+    linear-gradient(100deg, var(--black) 0%, var(--black) 26%, rgba(8,8,10,.58) 46%, rgba(8,8,10,0) 76%),
+    linear-gradient(0deg, rgba(8,8,10,.42) 0%, rgba(8,8,10,0) 24%),
+    linear-gradient(180deg, rgba(8,8,10,.45) 0%, rgba(8,8,10,0) 20%);}
+.ps .caption{position:absolute; right:clamp(22px,4vw,56px); bottom:26px; z-index:3; font-family:var(--label);
+  font-size:10.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.82);
+  display:inline-flex; align-items:center; gap:11px;}
+.ps .caption::before{content:""; width:24px; height:1px; background:var(--red);}
+.ps .inner{position:relative; z-index:3; max-width:1280px; margin:0 auto;
+  padding:clamp(92px,13vh,160px) clamp(22px,5vw,64px);}
+.ps .col{max-width:600px;}
+.ps .eyebrow{display:inline-flex; align-items:center; gap:14px; font-family:var(--label);
+  font-size:11px; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.62);}
+.ps .eyebrow::before{content:""; width:38px; height:1px; background:var(--red);}
+.ps .eyebrow .dot{width:5px; height:5px; border-radius:50%; background:var(--red); margin-left:-4px;
+  box-shadow:0 0 12px 2px rgba(227,6,19,.6);}
+.ps h2{font-family:var(--display); font-weight:500; font-size:clamp(2.1rem,1.15rem + 3.1vw,3.5rem);
+  line-height:1.08; letter-spacing:-.01em; color:#fff; max-width:15ch; margin-top:26px; text-wrap:balance;}
+.ps h2 .accent{color:var(--red); font-style:italic; font-weight:600;}
+.ps .lead{font-family:var(--body); font-size:clamp(1.02rem,.98rem + .25vw,1.16rem); line-height:1.7;
+  color:rgba(255,255,255,.74); max-width:52ch; letter-spacing:.004em; margin-top:clamp(22px,3vh,32px);}
+.ps .lead strong{color:#fff; font-weight:500;}
+.ps .items{margin-top:clamp(30px,4.5vh,52px); max-width:560px;}
+.ps .item{position:relative; display:grid; grid-template-columns:auto 1fr; gap:22px; align-items:start;
+  padding:24px clamp(8px,1.4vw,22px); border-top:1px solid var(--line);
+  transition:padding-left .4s var(--ease), background .4s var(--ease);}
+.ps .item:last-child{border-bottom:1px solid var(--line);}
+.ps .item::before{content:""; position:absolute; left:0; top:-1px; bottom:-1px; width:2px; background:var(--red);
+  transform:scaleY(0); transform-origin:top; transition:transform .45s var(--ease);}
+.ps .item::after{content:""; position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,0) 72%);
+  opacity:0; transition:opacity .4s var(--ease);}
+.ps .item:hover{padding-left:clamp(20px,2.4vw,34px);}
+.ps .item:hover::before{transform:scaleY(1);}
+.ps .item:hover::after{opacity:1;}
+.ps .item .num{font-family:var(--display); font-style:italic; font-weight:500; font-size:1.5rem;
+  color:rgba(255,255,255,.34); line-height:1; min-width:1.4em; transition:color .4s var(--ease);}
+.ps .item:hover .num{color:var(--red);}
+.ps .item .concern{font-family:var(--label); font-weight:600; font-size:1.02rem; letter-spacing:.005em; color:#fff;
+  display:flex; align-items:center; gap:10px;}
+.ps .item .concern .arrow{display:inline-flex; opacity:0; transform:translateX(-6px);
+  transition:opacity .4s var(--ease), transform .4s var(--ease); color:var(--red);}
+.ps .item:hover .concern .arrow{opacity:1; transform:translateX(0);}
+.ps .item .concern svg{width:15px; height:15px;}
+.ps .item .answer{font-family:var(--body); font-size:.96rem; line-height:1.6; color:rgba(255,255,255,.66);
+  margin-top:8px; max-width:44ch;}
+@media (max-width:900px){
+  .ps .photo{position:relative; width:100%; height:44vh; min-height:300px;
+    -webkit-mask-image:linear-gradient(180deg, #000 0%, #000 64%, transparent 100%);
+            mask-image:linear-gradient(180deg, #000 0%, #000 64%, transparent 100%);}
+  .ps .veil{background:linear-gradient(0deg, var(--black) 8%, rgba(8,8,10,.2) 40%, rgba(8,8,10,.5) 100%);}
+  .ps .inner{padding-top:clamp(40px,6vh,72px);}
+  .ps .col,.ps .items,.ps .lead{max-width:none;}
+  .ps .caption{display:none;}
+}
+@media (prefers-reduced-motion:reduce){ .ps .photo img{animation:none;} .ps .photo{transition:none; opacity:1; transform:none;} }
+
+/* ================== §3  HOW IT WORKS (.hiw) ================== */
+.hiw{position:relative; width:100%; overflow:hidden; background:var(--black); isolation:isolate;
+  background-image:radial-gradient(120% 80% at 92% 0%, rgba(227,6,19,.085) 0%, rgba(227,6,19,0) 46%);}
+.hiw::after{content:""; position:absolute; inset:0; z-index:5; pointer-events:none; opacity:.045; mix-blend-mode:overlay;
+  background-image:var(--grain);}
+.hiw .inner{position:relative; z-index:3; max-width:1180px; margin:0 auto;
+  padding:clamp(96px,14vh,168px) clamp(22px,5vw,64px);}
+.hiw .head{max-width:680px;}
+.hiw .eyebrow{display:inline-flex; align-items:center; gap:14px; font-family:var(--label);
+  font-size:11px; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.62);}
+.hiw .eyebrow::before{content:""; width:38px; height:1px; background:var(--red);}
+.hiw .eyebrow .dot{width:5px; height:5px; border-radius:50%; background:var(--red); margin-left:-4px;
+  box-shadow:0 0 12px 2px rgba(227,6,19,.6);}
+.hiw h2{font-family:var(--display); font-weight:500; font-size:clamp(2.1rem,1.15rem + 3.1vw,3.4rem);
+  line-height:1.09; letter-spacing:-.01em; color:#fff; max-width:17ch; margin-top:26px; text-wrap:balance;}
+.hiw h2 .accent{color:var(--red); font-style:italic; font-weight:600;}
+.hiw .lead{font-family:var(--body); font-size:clamp(1.02rem,.98rem + .25vw,1.14rem); line-height:1.7;
+  color:rgba(255,255,255,.7); max-width:48ch; margin-top:clamp(20px,2.6vh,28px);}
+.hiw .steps{position:relative; margin-top:clamp(66px,9vh,108px); --gap:clamp(30px,4vw,68px);
+  display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap);}
+.hiw .step{position:relative;}
+.hiw .si{transition:transform .4s var(--ease);}
+.hiw .track{position:relative; height:15px; margin-bottom:42px;}
+.hiw .seg{position:absolute; left:7.5px; top:7px; width:calc(100% + var(--gap)); height:1px; background:var(--line); z-index:0; overflow:hidden;}
+.hiw .step:last-child .seg{display:none;}
+.hiw .seg .fill{position:absolute; inset:0; background:linear-gradient(90deg,var(--red),var(--red-dark));
+  transform:scaleX(0); transform-origin:left; box-shadow:0 0 12px rgba(227,6,19,.5);}
+.hiw .node{position:absolute; left:0; top:0; width:15px; height:15px; border-radius:50%; z-index:2;
+  background:var(--black); border:1px solid rgba(255,255,255,.3);
+  transition:border-color .5s var(--ease) var(--nodeRevD,0s), box-shadow .3s var(--ease) 0s;}
+.hiw .node::before{content:""; position:absolute; inset:3.5px; border-radius:50%; background:var(--red);
+  transform:scale(0); transition:transform .5s var(--ease), box-shadow .5s var(--ease);}
+.hiw .node::after{content:""; position:absolute; inset:-4px; border-radius:50%; border:1px solid var(--red);
+  opacity:0; transform:scale(.6);}
+.hiw .tick{position:absolute; left:7px; top:15px; width:1px; height:27px; background:var(--line);
+  transform:scaleY(0); transform-origin:top;
+  transition:transform .5s var(--ease) var(--tickRevD,0s), background .3s var(--ease) 0s;}
+.hiw .num{font-family:var(--display); font-style:italic; font-weight:500; font-size:clamp(2.4rem,1.6rem + 2vw,3.2rem);
+  line-height:1; color:rgba(255,255,255,.24);
+  transition:color .55s var(--ease) var(--numRevD,0s), text-shadow .35s var(--ease) 0s, transform .35s var(--ease) 0s;}
+.hiw .step h3{position:relative; display:inline-block; font-family:var(--label); font-weight:600; font-size:1.15rem;
+  letter-spacing:.004em; color:#fff; margin-top:24px; line-height:1.3;}
+.hiw .step h3::after{content:""; position:absolute; left:0; bottom:-7px; height:1px; width:100%; background:var(--red);
+  transform:scaleX(0); transform-origin:left; transition:transform .4s var(--ease) 0s;}
+.hiw .step p{font-family:var(--body); font-size:.97rem; line-height:1.66; color:rgba(255,255,255,.64);
+  margin-top:18px; max-width:34ch;}
+.hiw .step .loc{color:rgba(255,255,255,.82); font-weight:500;}
+.hiw.in .step.s1 .node{border-color:var(--red); --nodeRevD:.30s;}
+.hiw.in .step.s1 .node::before{transform:scale(1); box-shadow:0 0 14px 2px rgba(227,6,19,.5); transition-delay:.30s;}
+.hiw.in .step.s1 .seg .fill{transform:scaleX(1); transition:transform .8s var(--ease) .40s;}
+.hiw.in .step.s2 .node{border-color:var(--red); --nodeRevD:1.15s;}
+.hiw.in .step.s2 .node::before{transform:scale(1); box-shadow:0 0 14px 2px rgba(227,6,19,.5); transition-delay:1.15s;}
+.hiw.in .step.s2 .seg .fill{transform:scaleX(1); transition:transform .8s var(--ease) 1.25s;}
+.hiw.in .step.s3 .node{border-color:var(--red); --nodeRevD:2.00s;}
+.hiw.in .step.s3 .node::before{transform:scale(1); box-shadow:0 0 14px 2px rgba(227,6,19,.5); transition-delay:2.00s;}
+.hiw.in .step.s1 .tick{transform:scaleY(1); --tickRevD:.45s;}
+.hiw.in .step.s2 .tick{transform:scaleY(1); --tickRevD:1.30s;}
+.hiw.in .step.s3 .tick{transform:scaleY(1); --tickRevD:2.05s;}
+.hiw.in .step.s1 .num{color:rgba(255,255,255,.92); --numRevD:.45s;}
+.hiw.in .step.s2 .num{color:rgba(255,255,255,.92); --numRevD:1.30s;}
+.hiw.in .step.s3 .num{color:rgba(255,255,255,.92); --numRevD:2.05s;}
+.hiw .step:hover .si{transform:translateY(-7px);}
+.hiw .step:hover .num{color:#fff; text-shadow:0 0 22px rgba(227,6,19,.55); transform:translateX(2px);}
+.hiw .step:hover .node{box-shadow:0 0 22px 3px rgba(227,6,19,.6);}
+.hiw .step:hover .tick{background:var(--red);}
+.hiw .step:hover h3::after{transform:scaleX(1);}
+.hiw .step:hover .node::after{animation:ping 1.5s var(--ease) infinite;}
+@keyframes ping{0%{opacity:.55; transform:scale(.7);} 70%{opacity:0; transform:scale(2.3);} 100%{opacity:0; transform:scale(2.3);}}
+@media (max-width:860px){
+  .hiw .steps{grid-template-columns:1fr; gap:0;}
+  .hiw .step{padding:0 0 clamp(36px,5vh,54px) 36px;}
+  .hiw .step:last-child{padding-bottom:0;}
+  .hiw .track{height:auto; margin-bottom:18px;}
+  .hiw .node{top:6px;}
+  .hiw .seg{left:7px; top:7px; width:1px; height:auto; inset:7px auto -100% 7px; background:var(--line);}
+  .hiw .seg .fill{background:linear-gradient(180deg,var(--red),var(--red-dark)); transform:scaleY(0); transform-origin:top;}
+  .hiw.in .step.s1 .seg .fill,.hiw.in .step.s2 .seg .fill{transform:scaleY(1);}
+  .hiw .tick{display:none;}
+  .hiw .step p{max-width:46ch;}
+}
+@media (prefers-reduced-motion:reduce){
+  .hiw .seg .fill{transition:none; transform:scaleX(1);}
+  .hiw .node,.hiw .node::before,.hiw .tick,.hiw .num,.hiw .si{transition:none;}
+  .hiw.in .step .node::before{transform:scale(1);}
+  .hiw.in .step .tick{transform:scaleY(1);}
+  .hiw .step:hover .node::after{animation:none;}
+}
+
+/* ================= §4  SOCIAL PROOF (.sp) ================= */
+.sp{position:relative; width:100%; overflow:hidden; background:var(--black); isolation:isolate;
+  background-image:radial-gradient(110% 80% at 16% 92%, rgba(227,6,19,.085) 0%, rgba(227,6,19,0) 48%);}
+.sp::after{content:""; position:absolute; inset:0; z-index:5; pointer-events:none; opacity:.045; mix-blend-mode:overlay;
+  background-image:var(--grain);}
+.sp .inner{position:relative; z-index:3; max-width:1180px; margin:0 auto;
+  padding:clamp(96px,14vh,168px) clamp(22px,5vw,64px);}
+.sp .head{max-width:820px;}
+.sp .eyebrow{display:inline-flex; align-items:center; gap:14px; font-family:var(--label);
+  font-size:11px; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.62);}
+.sp .eyebrow::before{content:""; width:38px; height:1px; background:var(--red);}
+.sp .eyebrow .dot{width:5px; height:5px; border-radius:50%; background:var(--red); margin-left:-4px;
+  box-shadow:0 0 12px 2px rgba(227,6,19,.6);}
+.sp h2{font-family:var(--display); font-weight:500; font-size:clamp(2.1rem,1.15rem + 3.1vw,3.4rem);
+  line-height:1.09; letter-spacing:-.01em; color:#fff; max-width:18ch; margin-top:26px; text-wrap:balance;}
+.sp h2 .accent{color:var(--red); font-style:italic; font-weight:600;}
+.sp .rating{display:flex; align-items:center; flex-wrap:wrap; gap:18px; margin-top:clamp(24px,3.2vh,34px); font-family:var(--label);}
+.sp .stars{display:inline-flex; gap:3px; color:var(--red); font-size:15px; letter-spacing:2px; filter:drop-shadow(0 0 6px rgba(227,6,19,.35));}
+.sp .score{font-family:var(--display); font-style:italic; font-weight:600; font-size:1.5rem; color:#fff; line-height:1;}
+.sp .rating .meta{font-size:.85rem; color:rgba(255,255,255,.6); letter-spacing:.01em;}
+.sp .rating .sep{width:1px; height:20px; background:var(--line);}
+.sp .platforms{display:inline-flex; align-items:center; gap:14px; font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.5);}
+.sp .platforms span{display:inline-flex; align-items:center; gap:7px;}
+.sp .platforms span::before{content:""; width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.32);}
+.sp .stage{display:grid; grid-template-columns:1.55fr 1fr; gap:clamp(40px,6vw,96px); align-items:start;
+  margin-top:clamp(54px,7.5vh,90px);}
+.sp .quotes{position:relative; min-height:clamp(280px,33vh,330px);}
+.sp .quote{position:absolute; inset:0; opacity:0; transform:translateY(16px); pointer-events:none;
+  transition:opacity .6s var(--ease), transform .7s var(--ease);}
+.sp .quote.show{opacity:1; transform:none; pointer-events:auto;}
+.sp .quote .cat{display:inline-flex; align-items:center; gap:10px; font-family:var(--label); font-size:10.5px;
+  font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.56);}
+.sp .quote .cat::before{content:""; width:18px; height:1px; background:var(--red);}
+.sp .quote blockquote{font-family:var(--display); font-weight:500; font-style:italic;
+  font-size:clamp(1.42rem,1.02rem + 1.5vw,2.3rem); line-height:1.34; letter-spacing:-.005em; color:#fff; margin-top:18px;}
+.sp .quote blockquote em{color:var(--red); font-style:italic;}
+.sp .quote .by{display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 14px; margin-top:26px; font-family:var(--label);}
+.sp .quote .by .name{font-size:.95rem; font-weight:600; color:#fff; letter-spacing:.01em;}
+.sp .quote .by .name::after{content:""; display:inline-block; width:22px; height:1px; background:var(--line); vertical-align:middle; margin-left:14px;}
+.sp .quote .by .car{font-size:.85rem; color:var(--red); font-weight:500; letter-spacing:.02em;}
+.sp .nav{display:flex; flex-direction:column; border-top:1px solid var(--line); padding-top:6px;}
+.sp .navitem{position:relative; display:block; width:100%; text-align:left; background:none; border:none;
+  border-bottom:1px solid var(--line); cursor:pointer; padding:18px 8px 19px 0; font-family:var(--label);
+  transition:padding-left .45s var(--ease);}
+.sp .navitem .nm{font-size:1rem; font-weight:600; color:rgba(255,255,255,.62); transition:color .4s var(--ease);}
+.sp .navitem .mk{display:block; font-size:.8rem; margin-top:5px; color:rgba(255,255,255,.4); letter-spacing:.02em; transition:color .4s var(--ease);}
+.sp .navitem:hover{padding-left:6px;}
+.sp .navitem:hover .nm{color:#fff;}
+.sp .navitem.active .nm{color:#fff;}
+.sp .navitem.active .mk{color:var(--red);}
+.sp .navitem .bar{position:absolute; left:0; bottom:-1px; height:2px; width:0;
+  background:linear-gradient(90deg,var(--red),var(--red-dark)); box-shadow:0 0 10px rgba(227,6,19,.45);}
+.sp.in .navitem.active .bar{animation:fill var(--dwell) linear forwards;}
+.sp .stage:hover .navitem.active .bar{animation-play-state:paused;}
+@keyframes fill{from{width:0} to{width:100%}}
+@media (max-width:860px){
+  .sp .stage{grid-template-columns:1fr; gap:clamp(38px,6vh,54px);}
+  .sp .quotes{min-height:clamp(280px,42vh,360px);}
+  .sp .rating .sep{display:none;}
+}
+@media (prefers-reduced-motion:reduce){
+  .sp .quote{transition:opacity .2s linear;}
+  .sp.in .navitem.active .bar{animation:none; width:100%;}
+}
+
+/* =================== §5  OBJECTION FAQ (.faq) =================== */
+.faq{position:relative; width:100%; overflow:hidden; background:var(--black); isolation:isolate;
+  background-image:radial-gradient(110% 80% at 94% 0%, rgba(227,6,19,.085) 0%, rgba(227,6,19,0) 46%);}
+.faq::after{content:""; position:absolute; inset:0; z-index:5; pointer-events:none; opacity:.045; mix-blend-mode:overlay;
+  background-image:var(--grain);}
+.faq .inner{position:relative; z-index:3; max-width:1280px; margin:0 auto;
+  padding:clamp(92px,13vh,156px) clamp(22px,5vw,64px);
+  display:grid; grid-template-columns:0.82fr 1.18fr; gap:clamp(40px,6vw,96px); align-items:start;}
+.faq .aside{position:sticky; top:clamp(40px,12vh,120px);}
+.faq .eyebrow{display:inline-flex; align-items:center; gap:14px; font-family:var(--label);
+  font-size:11px; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.62);}
+.faq .eyebrow::before{content:""; width:38px; height:1px; background:var(--red);}
+.faq .eyebrow .dot{width:5px; height:5px; border-radius:50%; background:var(--red); margin-left:-4px;
+  box-shadow:0 0 12px 2px rgba(227,6,19,.6);}
+.faq h2{font-family:var(--display); font-weight:500; font-size:clamp(2rem,1.1rem + 2.9vw,3.25rem);
+  line-height:1.08; letter-spacing:-.01em; color:#fff; max-width:13ch; margin-top:26px; text-wrap:balance;}
+.faq h2 .accent{color:var(--red); font-style:italic; font-weight:600;}
+.faq .lead{font-family:var(--body); font-size:clamp(1rem,.97rem + .22vw,1.12rem); line-height:1.7;
+  color:rgba(255,255,255,.7); max-width:40ch; margin-top:clamp(20px,2.6vh,28px);}
+.faq .note{margin-top:clamp(28px,4vh,40px); padding-top:22px; border-top:1px solid var(--line);
+  display:flex; gap:13px; align-items:flex-start; max-width:38ch;}
+.faq .note svg{width:17px; height:17px; flex:none; margin-top:2px; color:var(--red);}
+.faq .note p{font-family:var(--body); font-size:.92rem; line-height:1.6; color:rgba(255,255,255,.56);}
+.faq .list{border-top:1px solid var(--line);}
+.faq .row{position:relative; border-bottom:1px solid var(--line);}
+.faq .row::before{content:""; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--red);
+  transform:scaleY(0); transform-origin:center; transition:transform .5s var(--ease);}
+.faq .row.open::before{transform:scaleY(1);}
+.faq .q{width:100%; background:none; border:0; cursor:pointer; text-align:left; color:inherit;
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  padding:clamp(22px,2.6vh,30px) 0 clamp(22px,2.6vh,30px) clamp(0px,1.6vw,26px);
+  transition:padding-left .45s var(--ease);}
+.faq .row.open .q,
+.faq .q:hover{padding-left:clamp(16px,2.2vw,34px);}
+.faq .q h3{font-family:var(--display); font-weight:500; font-size:clamp(1.12rem,1.02rem + .5vw,1.42rem);
+  line-height:1.28; letter-spacing:-.005em; color:rgba(255,255,255,.82);
+  transition:color .4s var(--ease); text-wrap:balance;}
+.faq .row.open .q h3{color:#fff;}
+.faq .q:hover h3{color:#fff;}
+.faq .icon{position:relative; flex:none; width:34px; height:34px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.24);
+  transition:border-color .45s var(--ease), background .45s var(--ease), transform .5s var(--ease);}
+.faq .icon::before,.faq .icon::after{content:""; position:absolute; left:50%; top:50%; width:12px; height:1.5px;
+  background:rgba(255,255,255,.7); transform:translate(-50%,-50%);
+  transition:background .4s var(--ease), transform .5s var(--ease);}
+.faq .icon::after{transform:translate(-50%,-50%) rotate(90deg);}
+.faq .row.open .icon{border-color:var(--red); background:rgba(227,6,19,.1); transform:rotate(180deg);}
+.faq .row.open .icon::before{background:var(--red);}
+.faq .row.open .icon::after{transform:translate(-50%,-50%) rotate(90deg) scaleX(0);}
+.faq .q:hover .icon{border-color:rgba(255,255,255,.5);}
+.faq .row.open .q:hover .icon{border-color:var(--red);}
+.faq .a{display:grid; grid-template-rows:0fr; transition:grid-template-rows .55s var(--ease);}
+.faq .a-inner{overflow:hidden;}
+.faq .a p{font-family:var(--body); font-size:clamp(.97rem,.94rem + .16vw,1.06rem); line-height:1.72;
+  color:rgba(255,255,255,.68); max-width:60ch;
+  padding:0 0 clamp(26px,3vh,34px) clamp(0px,1.6vw,26px);
+  opacity:0; transform:translateY(8px); transition:opacity .5s var(--ease), transform .5s var(--ease);}
+.faq .row.open .q{padding-bottom:clamp(14px,1.6vh,18px);}
+.faq .row.open .a{grid-template-rows:1fr;}
+.faq .row.open .a p{opacity:1; transform:none; transition-delay:.12s;}
+.faq .a em{color:var(--red); font-style:normal; font-weight:500;}
+@media (max-width:900px){
+  .faq .inner{grid-template-columns:1fr; gap:clamp(36px,6vh,52px);}
+  .faq .aside{position:static;}
+  .faq h2{max-width:none;} .faq .lead,.faq .note{max-width:none;}
+}
+@media (prefers-reduced-motion:reduce){
+  .faq .a,.faq .a p,.faq .icon,.faq .row::before{transition:none;}
+}
+
+/* =================== §6  FINAL CTA (.cta-s) =================== */
+.cta-s{position:relative; width:100%; min-height:100vh; overflow:hidden; background:var(--black); isolation:isolate;
+  display:flex; align-items:center;}
+.cta-s .photo{position:absolute; inset:0; z-index:0; overflow:hidden; opacity:0;
+  transition:opacity 1.5s var(--ease) .05s;}
+.cta-s.in .photo{opacity:1;}
+.cta-s .photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:54% 40%;
+  filter:saturate(.82) contrast(1.06) brightness(.6); transform:scale(1.06);
+  transition:transform 1.8s var(--ease) .05s;}
+.cta-s.in .photo img{transform:scale(1.01);}
+.cta-s .veil{position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+    radial-gradient(118% 92% at 44% 46%, rgba(8,8,10,.22) 0%, rgba(8,8,10,.66) 54%, rgba(8,8,10,.92) 100%),
+    linear-gradient(180deg, rgba(8,8,10,.62) 0%, rgba(8,8,10,.12) 26%, rgba(8,8,10,.26) 56%, rgba(8,8,10,.9) 100%);}
+.cta-s .veil::before{content:""; position:absolute; left:50%; bottom:-6%; transform:translateX(-50%);
+  width:min(820px,92vw); height:50%;
+  background:radial-gradient(circle at 50% 100%, rgba(227,6,19,.2) 0%, rgba(227,6,19,0) 60%);}
+.cta-s::after{content:""; position:absolute; inset:0; z-index:5; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+  background-image:var(--grain);}
+.cta-s .inner{position:relative; z-index:3; max-width:780px; margin:0 auto; text-align:center;
+  padding:clamp(96px,13vh,150px) clamp(22px,5vw,64px);
+  display:flex; flex-direction:column; align-items:center;}
+.cta-s .frame{position:relative; width:clamp(120px,18vw,210px); height:1px; background:var(--line);
+  transform:scaleX(0); transform-origin:center; transition:transform 1s var(--ease) .15s;}
+.cta-s.in .frame{transform:scaleX(1);}
+.cta-s .frame::before{content:""; position:absolute; left:50%; top:-1.5px; width:46px; height:3px; transform:translateX(-50%) scaleX(0);
+  transform-origin:center; background:var(--red); box-shadow:0 0 16px 2px rgba(227,6,19,.7);
+  transition:transform .7s var(--ease) .55s;}
+.cta-s.in .frame::before{transform:translateX(-50%) scaleX(1);}
+.cta-s .eyebrow{margin-top:26px; font-family:var(--label); font-size:11px; font-weight:700;
+  letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.74);}
+.cta-s h2{font-family:var(--display); font-weight:500; font-size:clamp(2.4rem,1.2rem + 4vw,4.25rem);
+  line-height:1.04; letter-spacing:-.015em; color:#fff; margin-top:18px; text-wrap:balance;
+  text-shadow:0 2px 34px rgba(0,0,0,.55);}
+.cta-s h2 .accent{color:var(--red); font-style:italic; font-weight:600;}
+.cta-s .lead{font-family:var(--body); font-size:clamp(1.04rem,1rem + .3vw,1.2rem); line-height:1.66;
+  color:rgba(255,255,255,.84); max-width:46ch; margin-top:clamp(20px,2.6vh,28px);}
+.cta-s .action{display:flex; flex-wrap:wrap; align-items:stretch; justify-content:center; gap:14px;
+  margin-top:clamp(30px,4vh,42px);}
+.cta-s .plate{display:flex; align-items:stretch; height:62px; width:266px; max-width:78vw;
+  background:var(--plate-yellow); border:2px solid #0a0a0a; border-radius:7px; overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,.5);}
+.cta-s .plate .gb{background:var(--plate-blue); color:#fff; width:34px; display:flex; flex-direction:column;
+  align-items:center; justify-content:flex-end; gap:2px; padding-bottom:7px; font-size:11px; font-weight:700;}
+.cta-s .plate .gb .stars{font-size:8px;color:#FFD400}
+.cta-s .plate input{flex:1; border:0; background:transparent; outline:none; font-family:var(--label);
+  font-weight:700; color:var(--plate-ink); font-size:22px; letter-spacing:.06em; text-align:center; text-transform:uppercase; min-width:0;}
+.cta-s .plate input::placeholder{color:rgba(17,17,17,.5); font-weight:600; letter-spacing:.03em; font-size:18px;}
+.cta-s .cta{display:inline-flex; align-items:center; justify-content:center; gap:11px;
+  height:62px; padding:0 32px; border:0; cursor:pointer; background:var(--red); color:#fff;
+  font-family:var(--label); font-weight:700; font-size:12.5px; letter-spacing:.13em; text-transform:uppercase; text-decoration:none;
+  clip-path:polygon(0 0,100% 0,96% 100%,0 100%); transition:background .2s, box-shadow .35s var(--ease);
+  box-shadow:0 12px 40px -10px rgba(227,6,19,.6);}
+.cta-s .cta:hover{background:#fff; color:var(--black); box-shadow:0 12px 40px -10px rgba(227,6,19,.25);}
+.cta-s .cta svg{width:16px;height:16px; transition:transform .35s var(--ease);}
+.cta-s .cta:hover svg{transform:translateX(4px);}
+.cta-s .microcopy{font-family:var(--body); font-size:13px; color:var(--muted); margin-top:16px; max-width:48ch;}
+.cta-s .talk{margin-top:clamp(22px,3vh,30px); padding-top:20px; border-top:1px solid var(--line);
+  font-family:var(--label); font-size:13.5px; letter-spacing:.01em; color:rgba(255,255,255,.66);
+  display:inline-flex; align-items:center; gap:10px;}
+.cta-s .talk a{color:#fff; font-weight:600; text-decoration:none; border-bottom:1px solid rgba(227,6,19,.55);
+  padding-bottom:1px; transition:border-color .3s var(--ease), color .3s var(--ease);}
+.cta-s .talk a:hover{color:var(--red); border-color:var(--red);}
+.cta-s .talk svg{width:15px; height:15px; color:var(--red);}
+@media (max-width:760px){
+  .cta-s .photo img{object-position:54% 42%;}
+  .cta-s .action{flex-direction:column; align-items:stretch; width:100%; max-width:340px;}
+  .cta-s .plate{width:100%; max-width:none;}
+  .cta-s .cta{width:100%;}
+}
+@media (prefers-reduced-motion:reduce){
+  .cta-s .frame,.cta-s .frame::before,.cta-s .photo,.cta-s .photo img{transition:none;}
+  .cta-s .frame{transform:scaleX(1);}
+  .cta-s .photo,.cta-s.in .photo{opacity:1;} .cta-s.in .photo img{transform:scale(1.01);}
+}
+
+/* ========================= FOOTER ========================= */
+.footer{position:relative; width:100%; background:var(--black); overflow:hidden;
+  border-top:1px solid var(--line);
+  background-image:radial-gradient(90% 130% at 50% 100%, rgba(227,6,19,.06) 0%, rgba(227,6,19,0) 52%);}
+.footer::before{content:""; position:absolute; top:-1.5px; left:50%; transform:translateX(-50%) scaleX(0);
+  transform-origin:center; width:clamp(80px,12vw,140px); height:3px; z-index:6;
+  background:var(--red); box-shadow:0 0 16px 2px rgba(227,6,19,.6);
+  transition:transform .9s var(--ease) .1s;}
+.footer.in::before{transform:translateX(-50%) scaleX(1);}
+.footer::after{content:""; position:absolute; inset:0; z-index:5; pointer-events:none; opacity:.04; mix-blend-mode:overlay;
+  background-image:var(--grain);}
+.footer .inner{position:relative; z-index:3; max-width:1280px; margin:0 auto;
+  padding:clamp(60px,8vh,92px) clamp(22px,5vw,64px) clamp(30px,4vh,40px);}
+.footer .top{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:clamp(28px,5vw,72px); align-items:start;}
+.footer .brand .word{font-family:var(--display); font-weight:700; font-size:clamp(1.55rem,1.2rem + 1.1vw,2.05rem);
+  letter-spacing:-.01em; color:#fff; display:inline-flex; align-items:center; gap:10px;}
+.footer .brand .word .dot{width:7px; height:7px; border-radius:50%; background:var(--red);
+  box-shadow:0 0 0 0 rgba(227,6,19,.5); transition:box-shadow 1s var(--ease) .5s;}
+.footer.in .brand .word .dot{box-shadow:0 0 14px 3px rgba(227,6,19,.6);}
+.footer .brand .tag{font-family:var(--body); font-size:.95rem; line-height:1.6; color:var(--muted);
+  max-width:34ch; margin-top:16px;}
+.footer .col h4{font-family:var(--label); font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--faint); margin-bottom:18px;}
+.footer .col ul{list-style:none; display:flex; flex-direction:column; gap:12px;}
+.footer .col a, .footer .col .li{font-family:var(--body); font-size:.96rem; color:var(--muted); text-decoration:none;
+  transition:color .3s var(--ease); display:inline-flex; align-items:center; gap:9px; width:fit-content;}
+.footer .col a:hover{color:#fff;}
+.footer .col a .ic{color:var(--red); display:inline-flex;}
+.footer .col a .ic svg{width:14px; height:14px;}
+.footer .col a.plain{position:relative;}
+.footer .col a.plain::after{content:""; position:absolute; left:0; bottom:-2px; width:0; height:1px; background:var(--red);
+  transition:width .3s var(--ease);}
+.footer .col a.plain:hover::after{width:100%;}
+.footer .rule{height:1px; background:var(--line); margin:clamp(40px,5vh,56px) 0 clamp(24px,3vh,30px);
+  transform:scaleX(0); transform-origin:left; transition:transform 1.1s var(--ease) .35s;}
+.footer.in .rule{transform:scaleX(1);}
+.footer .fca{display:inline-flex; align-items:center; gap:10px; font-family:var(--label); font-size:12.5px; font-weight:600;
+  letter-spacing:.01em; color:rgba(255,255,255,.7); margin-bottom:16px;}
+.footer .fca svg{width:15px; height:15px; color:var(--red); flex:none;}
+.footer .legal{font-family:var(--body); font-size:12.5px; line-height:1.75; color:var(--faint); max-width:96ch;}
+.footer .base{display:flex; flex-wrap:wrap; gap:16px 28px; align-items:center; justify-content:space-between;
+  margin-top:clamp(26px,3.4vh,34px);}
+.footer .copyright{font-family:var(--label); font-size:12px; letter-spacing:.02em; color:var(--faint);}
+.footer .policies{display:flex; gap:24px;}
+.footer .policies a{font-family:var(--label); font-size:12px; letter-spacing:.02em; color:var(--muted); text-decoration:none;
+  transition:color .3s var(--ease);}
+.footer .policies a:hover{color:#fff;}
+@media (max-width:820px){
+  .footer .top{grid-template-columns:1fr 1fr; gap:36px;}
+  .footer .brand{grid-column:1 / -1;}
+}
+@media (max-width:520px){
+  .footer .top{grid-template-columns:1fr;}
+  .footer .base{flex-direction:column; align-items:flex-start; gap:14px;}
+}
+@media (prefers-reduced-motion:reduce){
+  .footer .rule,.footer::before,.footer .brand .word .dot{transition:none;}
+  .footer .rule{transform:scaleX(1);} .footer.in::before{transform:translateX(-50%) scaleX(1);}
+}
+</style>
+</head>
+<body>
+
+<!-- ========================= HEADER ========================= -->
+<header class="header" id="siteheader">
+  <a class="brand" href="#top"><span class="mark">RACE<b>LINE</b></span><span class="sub">Specialist Cars</span></a>
+
+  <nav class="navlinks">
+    <a href="#how">How it works</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#faq">Questions</a>
+  </nav>
+
+  <div class="right">
+    <a class="navphone" href="tel:+441423798781"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>01632 960210</span></a>
+    <a class="cta" href="#top">Get my indicative valuation
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- ========================== HERO ========================== -->
+<section class="hero" id="top">
+  <div class="bg">
+    <img class="base" src="heroes/assets/astonmartin-black-garage.jpg" alt="Aston Martin DBS under studio light">
+    <img class="w1" src="heroes/assets/porsche911-red-blacksurface.jpg" alt="Classic performance car">
+    <img class="w2" src="heroes/assets/ferrari-red-display-closeup.jpg" alt="Ferrari detail">
+  </div>
+  <div class="scrim"></div>
+  <div class="speedline"></div>
+
+  <div class="wrap">
+    <div class="copy">
+      <span class="kicker reveal d1">The considered way to sell</span>
+      <h1 class="reveal d2">Tell us about your car.<span class="line2">We'll tell you what it's worth <span class="accent">— properly.</span></span></h1>
+      <p class="sub reveal d3">Raceline Specialist Cars has been buying and selling specialist cars for 28 years. Share a few details and a specialist will come back to you with an indicative range — no obligation to proceed. Final figure confirmed in person at appraisal.</p>
+      <div class="action reveal d4">
+        <div class="plate"><div class="gb"><span class="stars">★</span>UK</div>
+          <input type="text" placeholder="Enter your reg" aria-label="Enter your registration" maxlength="8"></div>
+        <a class="cta" href="#">Get my indicative valuation
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <p class="microcopy reveal d5">Indicative range only — your final figure is confirmed in person. No obligation to sell.</p>
+    </div>
+  </div>
+
+  <div class="ticker">
+    <div class="track">
+      <span class="item">28 years buying specialist cars</span>
+      <span class="item">4.9 / 5 on Google — 3,530 reviews</span>
+      <span class="item">Dedicated specialist buying team</span>
+      <span class="item">Porsche · Aston Martin · Ferrari · McLaren</span>
+      <span class="item">28 years buying specialist cars</span>
+      <span class="item">4.9 / 5 on Google — 3,530 reviews</span>
+      <span class="item">Dedicated specialist buying team</span>
+      <span class="item">Porsche · Aston Martin · Ferrari · McLaren</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================ §2  PROBLEM → SOLUTION ================ -->
+<section class="ps" id="ps">
+  <div class="photo">
+    <img src="heroes/assets/porsche911-black-garage.jpg" alt="Specialist car at a marque dealership at dusk">
+  </div>
+  <div class="veil"></div>
+  <span class="caption">Handled privately · start to finish</span>
+
+  <div class="inner">
+    <div class="col">
+      <span class="eyebrow reveal" style="--d:.05s">Why owners come to us<span class="dot"></span></span>
+      <h2 class="reveal" style="--d:.14s">A car like yours deserves a <span class="accent">considered sale</span> — not a parade of strangers.</h2>
+      <p class="lead reveal" style="--d:.24s">Listing a specialist car on the open market means exposure you never asked for — tyre-kickers at your door, test drives in something worth more than most houses, and lowball approaches tangled up with finance and part-exchange. <strong>It's the wrong way to move a car this valuable.</strong> The considered route is quieter, and it's built around the way these cars actually change hands.</p>
+
+      <div class="items">
+        <div class="item reveal" style="--d:.34s">
+          <span class="num">01</span>
+          <div>
+            <div class="concern">Strangers at your door
+              <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+            <p class="answer">No public listing and no open viewings. We come to you, privately and by appointment — your address stays yours.</p>
+          </div>
+        </div>
+
+        <div class="item reveal" style="--d:.42s">
+          <span class="num">02</span>
+          <div>
+            <div class="concern">Handing the keys to anyone
+              <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+            <p class="answer">Your car is appraised by specialists who know it — not passed to whoever turns up wanting a drive.</p>
+          </div>
+        </div>
+
+        <div class="item reveal" style="--d:.50s">
+          <span class="num">03</span>
+          <div>
+            <div class="concern">Lowball approaches &amp; finance headaches
+              <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+            <p class="answer">An indicative range up front, the figure confirmed in person, and prompt, clean payment with the paperwork handled.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== §3  HOW IT WORKS ==================== -->
+<section class="hiw" id="how">
+  <div class="inner">
+    <div class="head">
+      <span class="eyebrow reveal" style="--d:.05s">How it works<span class="dot"></span></span>
+      <h2 class="reveal" style="--d:.14s">A calm, considered process — <span class="accent">from first details to final payment</span>.</h2>
+      <p class="lead reveal" style="--d:.24s">No listings, no haggling, no theatre. Three steps, on your timeline — and we handle everything in between.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step s1 reveal" style="--d:.34s">
+        <div class="track"><span class="seg"><span class="fill"></span></span><span class="node"></span><span class="tick"></span></div>
+        <div class="si">
+          <div class="num">01</div>
+          <h3>Tell us about the car</h3>
+          <p>Pop in your registration and a few details. We'll pull the exact specification — you fill in the rest in a minute or two.</p>
+        </div>
+      </div>
+
+      <div class="step s2 reveal" style="--d:.42s">
+        <div class="track"><span class="seg"><span class="fill"></span></span><span class="node"></span><span class="tick"></span></div>
+        <div class="si">
+          <div class="num">02</div>
+          <h3>We come back with an indicative range</h3>
+          <p>A considered guide for a car like yours, based on what these cars are actually achieving — not a desktop algorithm's best guess.</p>
+        </div>
+      </div>
+
+      <div class="step s3 reveal" style="--d:.50s">
+        <div class="track"><span class="seg"><span class="fill"></span></span><span class="node"></span><span class="tick"></span></div>
+        <div class="si">
+          <div class="num">03</div>
+          <h3>We confirm it in person</h3>
+          <p>A relaxed appraisal at <span class="loc">our Harrogate showroom</span>, or we collect. We confirm the figure, handle the paperwork, and settle by bank transfer.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== §4  SOCIAL PROOF ===================== -->
+<section class="sp" id="reviews">
+  <div class="inner">
+    <div class="head">
+      <span class="eyebrow reveal" style="--d:.05s">Sold with us<span class="dot"></span></span>
+      <h2 class="reveal" style="--d:.14s">Owners who wanted the <span class="accent">considered route</span> — and got it.</h2>
+
+      <!-- RATING STRIP · sample numbers for the eyeball; at ship = CONFIG {{rating}}/{{reviewCount}} + real platform logo/score/widget (G-COPY-2) -->
+      <div class="rating reveal" style="--d:.24s">
+        <span class="stars">★★★★★</span>
+        <span class="score">4.9</span>
+        <span class="meta">from 1,200+ verified reviews</span>
+        <span class="sep"></span>
+        <span class="platforms"><span>Google</span><span>PistonHeads</span></span>
+      </div>
+    </div>
+
+    <div class="stage reveal" style="--d:.34s">
+      <!-- QUOTE COLUMN — rotates through the exemplars -->
+      <div class="quote-col">
+        <div class="quotes">
+          <figure class="quote show" data-i="0">
+            <span class="cat">No chipping at appraisal</span>
+            <blockquote>I'd been burned by the &lsquo;instant offer&rsquo; sites that drop the number the moment you turn up. They inspected the car and the appraisal <em>matched what we'd discussed</em> — no deductions invented on the driveway.</blockquote>
+            <figcaption class="by"><span class="name">Mark T. · Leeds</span><span class="car">2018 BMW M2 Competition</span></figcaption>
+          </figure>
+
+          <figure class="quote" data-i="1">
+            <span class="cat">Outright · paid same week</span>
+            <blockquote>A clean exit, rather than months of timewasters on the classifieds. A sensible figure back the same day — and once they'd seen the car, <em>the number held</em>. Paid and collected inside the week.</blockquote>
+            <figcaption class="by"><span class="name">James H. · Surrey</span><span class="car">2019 Porsche 911 Carrera S</span></figcaption>
+          </figure>
+
+          <figure class="quote" data-i="2">
+            <span class="cat">Sale or return</span>
+            <blockquote>I didn't want to give it away at trade money, so we agreed a sale-or-return. They marketed it to the right buyers — and it sold for <em>a figure I'd never have got</em> trading it in.</blockquote>
+            <figcaption class="by"><span class="name">Richard P. · Cheshire</span><span class="car">2017 Mercedes-AMG GT S</span></figcaption>
+          </figure>
+
+          <figure class="quote" data-i="3">
+            <span class="cat">Finance settled</span>
+            <blockquote>Still had finance owing, which I assumed would be a headache. They dealt with the lender directly, <em>cleared the settlement and paid me the equity</em> — I didn't chase anyone.</blockquote>
+            <figcaption class="by"><span class="name">Daniel K. · West Midlands</span><span class="car">2020 Audi RS6 Avant</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- NAME-INDEX -->
+      <div class="nav">
+        <button class="navitem active" data-i="0"><span class="nm">Mark T.</span><span class="mk">2018 BMW M2 Competition</span><span class="bar"></span></button>
+        <button class="navitem" data-i="1"><span class="nm">James H.</span><span class="mk">2019 Porsche 911 Carrera S</span><span class="bar"></span></button>
+        <button class="navitem" data-i="2"><span class="nm">Richard P.</span><span class="mk">2017 Mercedes-AMG GT S</span><span class="bar"></span></button>
+        <button class="navitem" data-i="3"><span class="nm">Daniel K.</span><span class="mk">2020 Audi RS6 Avant</span><span class="bar"></span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== §5  OBJECTION FAQ ===================== -->
+<section class="faq" id="faq">
+  <div class="inner">
+
+    <!-- sticky editorial aside -->
+    <aside class="aside">
+      <span class="eyebrow reveal" style="--d:.05s">Questions, answered<span class="dot"></span></span>
+      <h2 class="reveal" style="--d:.12s">The questions owners <span class="accent">actually ask</span>.</h2>
+      <p class="lead reveal" style="--d:.2s">No script and no pressure — just how a considered sale works, and exactly what happens to your car and your details.</p>
+      <div class="note reveal" style="--d:.28s">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <p>Anything we've not covered here, just ask when we speak. There's never any obligation.</p>
+      </div>
+    </aside>
+
+    <!-- accordion -->
+    <div class="list">
+
+      <div class="row open reveal" style="--d:.16s">
+        <button class="q" aria-expanded="true">
+          <h3>Will you knock the price down when you see the car?</h3>
+          <span class="icon" aria-hidden="true"></span>
+        </button>
+        <div class="a"><div class="a-inner"><p>The indicative range you see is given in good faith from what you've told us. The appraisal is there to <em>confirm</em> it — not to find reasons to chip you. If the car is as described, the figure holds. If something genuinely differs, we'll show you exactly why, openly and with no theatrics.</p></div></div>
+      </div>
+
+      <div class="row reveal" style="--d:.22s">
+        <button class="q" aria-expanded="false">
+          <h3>Is the range an offer? How long does it stand?</h3>
+          <span class="icon" aria-hidden="true"></span>
+        </button>
+        <div class="a"><div class="a-inner"><p>It's a considered guide — <em>not an offer, and not a deadline</em>. There's nothing to accept and no clock running. We give a range rather than a single tempting number precisely so we're not over-promising to win the enquiry. It's a figure we can stand behind in person.</p></div></div>
+      </div>
+
+      <div class="row reveal" style="--d:.28s">
+        <button class="q" aria-expanded="false">
+          <h3>Am I under any obligation to sell?</h3>
+          <span class="icon" aria-hidden="true"></span>
+        </button>
+        <div class="a"><div class="a-inner"><p>None. There's no charge for a valuation and <em>no commitment to sell</em> — no agreement to sign and nothing to pay. If the figure isn't right for you, that's absolutely fine: you walk away with no obligation.</p></div></div>
+      </div>
+
+      <div class="row reveal" style="--d:.34s">
+        <button class="q" aria-expanded="false">
+          <h3>How and when would I get paid?</h3>
+          <span class="icon" aria-hidden="true"></span>
+        </button>
+        <div class="a"><div class="a-inner"><p>Once the appraisal and paperwork are complete, payment is made by <em>secure bank transfer the same day</em> — funds typically clear within hours. Prefer not to travel? Nationwide collection can usually be arranged within 24 hours.</p></div></div>
+      </div>
+
+      <div class="row reveal" style="--d:.4s">
+        <button class="q" aria-expanded="false">
+          <h3>Who sees my details — will my sale be public?</h3>
+          <span class="icon" aria-hidden="true"></span>
+        </button>
+        <div class="a"><div class="a-inner"><p>Your details stay with Raceline Specialist Cars and the buying team alone. We <em>never sell or pass them on</em>, and they're used only to prepare your valuation and arrange the appraisal. If you'd rather your sale stayed quiet, it can — like the best specialists, we're happy to handle a car discreetly and, where appropriate, sell it on without ever advertising it publicly.</p></div></div>
+      </div>
+
+      <div class="row reveal" style="--d:.46s">
+        <button class="q" aria-expanded="false">
+          <h3>Why sell to a dealer rather than privately or at auction?</h3>
+          <span class="icon" aria-hidden="true"></span>
+        </button>
+        <div class="a"><div class="a-inner"><p>Privately, you're exposing your car — and your time — to strangers, drawn-out viewings and payment risk, often for weeks. At auction you pay fees and inherit the result on the day. Selling to Raceline Specialist Cars removes that: <em>one professional buyer, a straightforward process</em>, and payment by bank transfer once we've agreed. The convenience is the point.</p></div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ====================== §6  FINAL CTA ====================== -->
+<section class="cta-s" id="cta">
+  <div class="photo"><img src="heroes/assets/astonmartin-black-garage.jpg" alt="Specialist car under warm light at a marque dealership"></div>
+  <div class="veil"></div>
+
+  <div class="inner">
+    <span class="frame"></span>
+    <span class="eyebrow reveal" style="--d:.7s">Ready when you are</span>
+    <h2 class="reveal" style="--d:.8s">See what your car is worth — <span class="accent">the considered way.</span></h2>
+    <p class="lead reveal" style="--d:.9s">Start with the reg for an indicative range. No obligation, no pressure — just an honest place to begin, with the figure confirmed in person.</p>
+
+    <div class="action reveal" style="--d:1s">
+      <div class="plate">
+        <div class="gb"><span class="stars">★</span>UK</div>
+        <input type="text" placeholder="Enter your reg" aria-label="Enter your registration" maxlength="8">
+      </div>
+      <a class="cta" href="#top">Get my indicative valuation
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <p class="microcopy reveal" style="--d:1.08s">Indicative range only — your final figure is confirmed in person. No obligation to sell.</p>
+
+    <div class="talk reveal" style="--d:1.16s">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Prefer to talk it through? Call <a href="tel:+441423798781">01632 960210</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= FOOTER ========================= -->
+<footer class="footer" id="footer">
+  <div class="inner">
+
+    <div class="top">
+      <div class="brand reveal" style="--d:.05s">
+        <span class="word">Raceline Specialist Cars<span class="dot"></span></span>
+        <p class="tag">The considered way to sell a specialist car — privately, to a buyer who actually knows it.</p>
+      </div>
+
+      <div class="col reveal" style="--d:.15s">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+441423798781"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>01632 960210</a></li>
+          <li><a href="mailto:enquiries@racelinespecialistcars.co.uk"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>enquiries@racelinespecialistcars.co.uk</a></li>
+          <li><span class="li"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>Harrogate, North Yorkshire</span></li>
+        </ul>
+      </div>
+
+      <div class="col reveal" style="--d:.23s">
+        <h4>Information</h4>
+        <ul>
+          <li><a class="plain" href="#how">How it works</a></li>
+          <li><a class="plain" href="#faq">Questions</a></li>
+          <li><a class="plain" href="#privacy">Privacy policy</a></li>
+          <li><a class="plain" href="#terms">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rule"></div>
+
+    <!-- FCA line: render ONLY if {{fcaFrn}} supplied AND §5.10 FCA gate passes — else omit the whole line (G-RL-3 / §5.10). 000000 = real Raceline FRN, INTERNAL demo only. -->
+    <p class="fca reveal" style="--d:.42s">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Authorised and regulated by the Financial Conduct Authority (FRN 000000).
+    </p>
+
+    <p class="legal reveal" style="--d:.48s">All valuations shown are indicative guides only and are not binding offers; the final figure is confirmed in writing at the in-person appraisal. Your details are used only to prepare your valuation and arrange your appointment, and are never sold or shared.</p>
+
+    <div class="base reveal" style="--d:.56s">
+      <span class="copyright">© 2026 Raceline Specialist Cars. All rights reserved.</span>
+      <div class="policies">
+        <a href="#privacy">Privacy</a>
+        <a href="#terms">Terms</a>
+        <a href="#cookies">Cookies</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+/* ---- HEADER: slide-in + scroll-condense ---- */
+{
+  const header = document.getElementById('siteheader');
+  requestAnimationFrame(() => header.classList.add('ready'));
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 40);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive:true });
+}
+
+/* ---- generic one-shot section reveal observer ---- */
+function revealOn(id, threshold){
+  const sec = document.getElementById(id);
+  if(!sec) return;
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ sec.classList.add('in'); io.disconnect(); } });
+  }, { threshold });
+  io.observe(sec);
+}
+revealOn('ps', 0.18);
+revealOn('how', 0.22);
+revealOn('faq', 0.14);
+revealOn('cta', 0.20);
+revealOn('footer', 0.15);
+
+/* ---- §4 SOCIAL PROOF: rotating testimonial ---- */
+{
+  const sec = document.getElementById('reviews');
+  const quotes = [...sec.querySelectorAll('.quote')];
+  const navs = [...sec.querySelectorAll('.navitem')];
+  let active = 0, started = false;
+
+  function setActive(i){
+    active = i;
+    quotes.forEach((q,k)=>q.classList.toggle('show', k===i));
+    navs.forEach((n,k)=>n.classList.toggle('active', k===i));
+  }
+  navs.forEach((n,i)=>n.addEventListener('click', ()=>setActive(i)));
+  sec.querySelectorAll('.bar').forEach(bar=>{
+    bar.addEventListener('animationend', ()=>setActive((active+1)%quotes.length));
+  });
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting && !started){ started=true; sec.classList.add('in'); setActive(0); io.disconnect(); } });
+  }, { threshold: 0.16 });
+  io.observe(sec);
+}
+
+/* ---- §5 FAQ: one row open at a time ---- */
+{
+  const sec = document.getElementById('faq');
+  const rows = Array.from(sec.querySelectorAll('.row'));
+  rows.forEach(row => {
+    const btn = row.querySelector('.q');
+    btn.addEventListener('click', () => {
+      const isOpen = row.classList.contains('open');
+      rows.forEach(r => { r.classList.remove('open'); r.querySelector('.q').setAttribute('aria-expanded','false'); });
+      if (!isOpen){ row.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+    });
+  });
+}
+</script>
+</body>
+</html>
